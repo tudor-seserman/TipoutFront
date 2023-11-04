@@ -1,5 +1,8 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:8080/",
+  // DEVELOPMENT
+  // baseURL: "http://localhost:8080/",
+  // PRODUCTION
+  baseURL: "https://tipoutback.onrender.com",
 });
