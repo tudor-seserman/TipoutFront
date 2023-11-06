@@ -8,8 +8,6 @@ const TipoutReport = () => {
 
   return (
     <>
-      <Banner />
-      <br />
       <h1>Tip Distribution</h1>
       <Table striped bordered>
         <thead>

@@ -8,7 +8,6 @@ import LoginOrRegistration from "./login/LoginOrRegistration";
 const Home = () => {
   return (
     <>
-      <Banner />
       <Container fluid>
         <Row
           className="align-items-center

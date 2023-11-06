@@ -79,7 +79,6 @@ const Register = () => {
 
   return (
     <>
-      <Banner />
       <Form method="post" onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>
           <Form.Control

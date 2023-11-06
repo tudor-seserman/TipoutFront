@@ -64,7 +64,6 @@ const AddEmployees = () => {
 
   return (
     <>
-      <Banner />
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Control

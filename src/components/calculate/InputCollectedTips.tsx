@@ -75,7 +75,7 @@ const InputCollectedTips = () => {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        alert("Does not match user information on record.");
+        alert("No tips were declared.");
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
@@ -93,7 +93,6 @@ const InputCollectedTips = () => {
 
   return (
     <>
-      <Banner />
       <Form onSubmit={handleSubmit}>
         <div>
           <h3>Enter Tips</h3>

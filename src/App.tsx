@@ -11,6 +11,7 @@ import { ProtectedRoute } from "./components/authentication/ProtectedRoute";
 import InputCollectedTips from "./components/calculate/InputCollectedTips";
 import TipoutReport from "./components/calculate/TipoutReport";
 import CurrentEmployees from "./components/employees/CurrentEmployees";
+import Banner from "./components/Banner";
 
 function App() {
   return (

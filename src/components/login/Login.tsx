@@ -28,8 +28,6 @@ function Login() {
 
   return (
     <>
-      <Banner />
-
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>
           <Form.Control
