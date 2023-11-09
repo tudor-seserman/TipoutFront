@@ -10,8 +10,9 @@ const AddEmployees = () => {
   const { user } = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [employeeRole, setEmployeeRole] = useState("test");
+  const [employeeRole, setEmployeeRole] = useState("");
   const [employerRoles, setEmployerRoles] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     api
@@ -34,15 +35,21 @@ const AddEmployees = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setSubmitting(true);
     try {
       const response = await api.post("/employees", CreateEmployeeDTO, {
         headers: {
           Authorization: "Bearer " + user.accessToken,
         },
       });
-
-      console.log(response.data);
+      setSubmitting(false);
+      alert(`${firstName} was added`);
+      setFirstName("");
+      setLastName("");
+      setEmployeeRole("");
+      e.target.reset();
     } catch (error: any) {
+      setSubmitting(false);
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -69,6 +76,7 @@ const AddEmployees = () => {
           <Form.Control
             placeholder="First Name"
             aria-label="First Name"
+            readOnly={submitting}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </Form.Group>
@@ -76,15 +84,21 @@ const AddEmployees = () => {
           <Form.Control
             placeholder="Last Name"
             aria-label="Lat Name"
+            readOnly={submitting}
             onChange={(e) => setLastName(e.target.value)}
           />
         </Form.Group>
         <EmployeeRoleSelect
+          isDisabled={submitting}
           handleChange={(value) => setEmployeeRole(value.value)}
           options={employerRoles.map((t: string) => ({ value: t, label: t }))}
         />
         <Form.Group>
-          <Form.Control type="submit" value="Add Employee" />
+          <Form.Control
+            disabled={submitting}
+            type="submit"
+            value="Add Employee"
+          />
         </Form.Group>
       </Form>
     </>

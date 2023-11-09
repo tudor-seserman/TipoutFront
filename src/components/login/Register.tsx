@@ -17,6 +17,7 @@ const Register = () => {
   const [usernameI, setUsernameI] = useState("");
   const [passwordI, setPasswordI] = useState("");
   const [verifyPasswordI, setVerifyPasswordI] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   let navigate = useNavigate();
 
   const {
@@ -36,6 +37,7 @@ const Register = () => {
   };
 
   const addEmployer = async () => {
+    setSubmitting(true);
     try {
       // console.log(employerRegistrationFormDTO);
       const response = await api.post(
@@ -58,6 +60,7 @@ const Register = () => {
         return navigate("/login");
       }
     } catch (error: any) {
+      setSubmitting(false);
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -84,6 +87,7 @@ const Register = () => {
           <Form.Control
             placeholder="Business Name"
             aria-label="Business Name"
+            readOnly={submitting}
             {...register("businessName", { required: true, minLength: 3 })}
             onChange={(e) => setBusinessNameI(e.target.value)}
           />
@@ -97,6 +101,7 @@ const Register = () => {
           <Form.Control
             placeholder="Username"
             aria-label="Username"
+            readOnly={submitting}
             {...register("username", {
               required: true,
               minLength: 3,
@@ -111,6 +116,7 @@ const Register = () => {
           <Form.Control
             placeholder="Password"
             aria-label="Password"
+            readOnly={submitting}
             {...register("password", {
               required: true,
               minLength: 5,
@@ -130,6 +136,7 @@ const Register = () => {
           <Form.Control
             placeholder="Verify Password"
             aria-label="Verify Password"
+            readOnly={submitting}
             {...register("verifyPassword", {
               validate: (val: String) => {
                 if (watch("password") != val) {
@@ -146,6 +153,7 @@ const Register = () => {
         <input
           type="submit"
           className="btn btn-primary"
+          disabled={submitting}
           value="Register"
         ></input>
       </Form>

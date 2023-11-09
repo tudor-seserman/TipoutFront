@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 import api from "../API/axiosConfig";
@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
         // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);
       }
+      return error;
     }
   };
 

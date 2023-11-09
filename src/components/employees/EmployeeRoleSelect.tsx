@@ -3,11 +3,13 @@ import Select, { ActionMeta } from "react-select";
 import Form from "react-bootstrap/Form";
 
 type EmployeeRoleSelectProps = {
+  submitting: boolean;
   options: readonly unknown[];
   handleChange: (newValue: unknown, actionMeta: ActionMeta<unknown>) => void;
 };
 
 const EmployeeRoleSelect = ({
+  submitting,
   options,
   handleChange,
 }: EmployeeRoleSelectProps) => {
@@ -42,7 +44,11 @@ const EmployeeRoleSelect = ({
     <Form.Group>
       <Form.Label>
         What is their role?
-        <Select onChange={handleChange} options={options} />
+        <Select
+          onChange={handleChange}
+          options={options}
+          isDisabled={submitting}
+        />
       </Form.Label>
     </Form.Group>
   );

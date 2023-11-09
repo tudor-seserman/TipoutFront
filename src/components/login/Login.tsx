@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Banner from "../Banner";
 import Form from "react-bootstrap/Form";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuth } from "../../hooks/useAuth";
@@ -11,6 +10,7 @@ type Inputs = {
 function Login() {
   const [usernameI, setUsernameI] = useState("");
   const [passwordI, setPasswordI] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const {
     register,
@@ -24,7 +24,11 @@ function Login() {
   };
 
   const { login } = useAuth();
-  const onSubmit: SubmitHandler<Inputs> = () => login(loginFormDTO);
+  const onSubmit: SubmitHandler<Inputs> = async () => {
+    setSubmitting(true);
+    const inProcess = await login(loginFormDTO);
+    setSubmitting(false);
+  };
 
   return (
     <>
@@ -33,6 +37,7 @@ function Login() {
           <Form.Control
             placeholder="Username"
             aria-label="Username"
+            readOnly={submitting}
             {...register("username", { required: true })}
             onChange={(e) => setUsernameI(e.target.value)}
           />
@@ -43,13 +48,19 @@ function Login() {
             placeholder="Password"
             aria-label="Password"
             type="password"
+            readOnly={submitting}
             {...register("password", { required: true })}
             onChange={(e) => setPasswordI(e.target.value)}
           />
           {errors.password && <span>This field is required</span>}
         </Form.Group>
 
-        <input type="submit" className="btn btn-primary" value="Login"></input>
+        <input
+          type="submit"
+          className="btn btn-primary"
+          value="Login"
+          disabled={submitting}
+        ></input>
       </Form>
     </>
   );
