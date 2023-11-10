@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../API/axiosConfig";
 import { useNavigate } from "react-router-dom";
-import Banner from "../Banner";
 import Form from "react-bootstrap/Form";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -10,11 +9,16 @@ type Employee = {
   nonMoneyHandler: {};
 };
 
+type TipRate = {
+  tipRate: {};
+};
+
 const InputCollectedTips = () => {
   const { user } = useAuth();
   const [moneyHandlers, setMoneyHandlers] = useState<Employee[]>([]);
   const [nonMoneyHandlers, setNonMoneyHandlers] = useState<Employee[]>([]);
   const [tipsCollected, setTipsCollected] = useState<Employee[]>([]);
+  const [tipRates, setTipRates] = useState<TipRate[]>([]);
   const navigate = useNavigate();
 
   const handleMoneyHandlersChange = (event, index) => {
@@ -59,6 +63,18 @@ const InputCollectedTips = () => {
     setTipsCollected([...moneyHandlers, ...nonMoneyHandlers]);
   }, [moneyHandlers, nonMoneyHandlers]);
 
+  useEffect(() => {
+    api
+      .get("/employer/rates", {
+        headers: {
+          Authorization: "Bearer " + user.accessToken,
+        },
+      })
+      .then((res) => {
+        setTipRates(res.data);
+      });
+  }, []);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
@@ -93,6 +109,17 @@ const InputCollectedTips = () => {
 
   return (
     <>
+      <h1>Current Schema: Weighted Tippool</h1>
+      <div>
+        {tipRates.map(function (tipRate, index) {
+          return (
+            <h5 key={index}>
+              {tipRate.roleName}: {tipRate.tipRate}%
+            </h5>
+          );
+        })}
+      </div>
+      <br />
       <Form onSubmit={handleSubmit}>
         <div>
           <h3>Enter Tips</h3>
@@ -106,6 +133,7 @@ const InputCollectedTips = () => {
                     <Form.Control
                       type="number"
                       step="any"
+                      min="0"
                       placeholder={"Tips for " + moneyHandler.name}
                       defaultValue={moneyHandler.tips}
                       onChange={(event) =>
