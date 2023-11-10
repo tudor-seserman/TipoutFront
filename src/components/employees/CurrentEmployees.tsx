@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import api from "../../API/axiosConfig";
-import Banner from "../Banner";
 import { useAuth } from "../../hooks/useAuth";
 import { Button, Form, Table } from "react-bootstrap";
 import EmployeeRoleSelect from "./EmployeeRoleSelect";
+import { Employee } from "../utils/types/Employee";
 
 const CurrentEmployees = () => {
   const { user } = useAuth();
   const [employees, setEmployees] = useState([]);
-  const [employeeID, setEmployeeID] = useState(null);
+  const [employeeID, setEmployeeID] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [employeeRole, setEmployeeRole] = useState("");
   const [employerRoles, setEmployerRoles] = useState([]);
-  const [employeeToDelete, setEmployeeToDelete] = useState("");
+  const [employeeToDelete, setEmployeeToDelete] = useState(0);
   const [employeesUpdated, setEmployeesUpdated] = useState(false);
-  const [idEdit, setIdEdit] = useState(null);
+  const [idEdit, setIdEdit] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
   const EditEmployeeDTO = {
@@ -62,7 +62,7 @@ const CurrentEmployees = () => {
       setFirstName("");
       setLastName("");
       setEmployeeRole("");
-      setIdEdit(null);
+      setIdEdit(0);
       setEmployeesUpdated(!employeesUpdated);
     } catch (error: any) {
       setSubmitting(false);
@@ -131,9 +131,9 @@ const CurrentEmployees = () => {
         </thead>
         <tbody>
           {employees.map(function (employee) {
-            const employeeObject: Object = JSON.parse(employee);
+            const employeeObject: Employee = JSON.parse(employee);
             return (
-              <tr key={employeeObject.id}>
+              <tr key={String(employeeObject.id)}>
                 {employeeObject.id != idEdit && (
                   <>
                     <td>
@@ -179,7 +179,7 @@ const CurrentEmployees = () => {
                     onClick={(e) => {
                       if (employeeObject.id == idEdit) {
                         handleSubmitEdit(e);
-                        setIdEdit(null);
+                        setIdEdit(0);
                       } else {
                         setFirstName(employeeObject.firstName);
                         setLastName(employeeObject.lastName);

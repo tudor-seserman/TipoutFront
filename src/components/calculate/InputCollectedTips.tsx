@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import api from "../../API/axiosConfig";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { useAuth } from "../../hooks/useAuth";
-
-type Employee = {
-  moneyHandler: {};
-  nonMoneyHandler: {};
-};
-
-type TipRate = {
-  tipRate: {};
-};
+import { Button } from "react-bootstrap";
+import { TipRate } from "../utils/types/TipRate";
+import { Employee } from "../utils/types/Employee";
 
 const InputCollectedTips = () => {
   const { user } = useAuth();
@@ -109,7 +103,8 @@ const InputCollectedTips = () => {
 
   return (
     <>
-      <h1>Current Schema: Weighted Tippool</h1>
+      <h1>Current Schema: </h1>
+      <h2>Weighted Tippool By Role</h2>
       <div>
         {tipRates.map(function (tipRate, index) {
           return (
@@ -119,6 +114,11 @@ const InputCollectedTips = () => {
           );
         })}
       </div>
+      <Link to="/settings">
+        <Button>Customize role distribution </Button>
+      </Link>
+      <br />
+      <br />
       <br />
       <Form onSubmit={handleSubmit}>
         <div>

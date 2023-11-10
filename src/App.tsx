@@ -12,6 +12,7 @@ import InputCollectedTips from "./components/calculate/InputCollectedTips";
 import TipoutReport from "./components/calculate/TipoutReport";
 import CurrentEmployees from "./components/employees/CurrentEmployees";
 import Banner from "./components/Banner";
+import Settings from "./components/settings/Settings";
 
 function App() {
   return (
@@ -37,6 +38,16 @@ function App() {
             <Routes>
               <Route path="/" element={<InputCollectedTips />} />
               <Route path="/report" element={<TipoutReport />} />
+            </Routes>
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/settings/*"
+        element={
+          <ProtectedRoute>
+            <Routes>
+              <Route path="/" element={<Settings />} />
             </Routes>
           </ProtectedRoute>
         }
