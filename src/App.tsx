@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "./API/axiosConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Register from "./components/login/Register";
 import Login from "./components/login/Login";
@@ -20,6 +20,7 @@ function App() {
       <Route path="/" element={<Home />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Register />}></Route>
+      <Route path="*" element={<Navigate to="/" replace />}></Route>
       <Route
         path="/employees/*"
         element={

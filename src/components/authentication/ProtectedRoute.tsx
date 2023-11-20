@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useEffect } from "react";
+import Login from "../login/Login";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -14,7 +15,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (e) {
-      return null;
+      navigate("/login");
     }
   };
 
@@ -22,14 +23,13 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const decodedJwt = parseJwt(user.accessToken);
     if (decodedJwt.exp * 1000 < Date.now()) {
       logout();
+      return <Login />;
     }
   }
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, []);
+  if (!user) {
+    return <Login />;
+  }
 
   return children;
 };
