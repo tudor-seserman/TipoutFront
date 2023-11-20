@@ -7,13 +7,8 @@ interface StyleProp {
 
 const BaseStyle = ({ children }: StyleProp) => {
   return (
-    <Container fluid>
-      <Row
-        className="align-items-center
-        justify-content-center
-        text-center
-        bg-info"
-      >
+    <Container className="baseStyle">
+      <Row>
         <Col gx={2} gx-lg={3}>
           {children}
         </Col>
