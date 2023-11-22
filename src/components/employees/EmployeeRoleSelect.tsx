@@ -1,18 +1,13 @@
 import React from "react";
 import Select, { ActionMeta } from "react-select";
 import Form from "react-bootstrap/Form";
-
-type EmployeeRoleSelectProps = {
-  submitting: boolean;
-  options: readonly unknown[];
-  handleChange: (newValue: unknown, actionMeta: ActionMeta<unknown>) => void;
-};
+import { SelectProps } from "../utils/types/SelectProps";
 
 const EmployeeRoleSelect = ({
   submitting,
   options,
   handleChange,
-}: EmployeeRoleSelectProps) => {
+}: SelectProps) => {
   const customStyles = {
     control: (base, state) => ({
       ...base,

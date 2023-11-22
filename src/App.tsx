@@ -8,11 +8,11 @@ import Register from "./components/login/Register";
 import Login from "./components/login/Login";
 import AddEmployees from "./components/employees/AddEmployees";
 import { ProtectedRoute } from "./components/authentication/ProtectedRoute";
-import InputCollectedTips from "./components/calculate/InputCollectedTips";
 import TipoutReport from "./components/calculate/TipoutReport";
 import CurrentEmployees from "./components/employees/CurrentEmployees";
 import Banner from "./components/Banner";
 import Settings from "./components/settings/Settings";
+import InputCollectedTips from "./components/calculate/InputCollectedTips";
 
 function App() {
   return (
