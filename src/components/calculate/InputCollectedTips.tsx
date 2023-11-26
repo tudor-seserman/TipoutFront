@@ -2,19 +2,17 @@ import React, { useEffect, useState } from "react";
 import WeightedTippoolByRole from "./schemas/WeightedTippoolByRole";
 import SchemaSelector from "./SchemaSelector";
 import { Schemas } from "../utils/Schemas";
+import SchemaLanding from "./SchemaLanding";
 
 const InputCollectedTips = () => {
-  const [schema, setSchema] = useState(<WeightedTippoolByRole />);
+  const [schema, setSchema] = useState(<SchemaLanding />);
   const [submitting, setSubmitting] = useState(false);
 
   function handleSchemaSelection(value) {
     setSubmitting(true);
-    console.log(value);
     setSchema(Schemas[value]);
     setSubmitting(false);
   }
-
-  // useEffect(() => {}, [schema]);
 
   return (
     <>

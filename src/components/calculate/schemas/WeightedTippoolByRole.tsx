@@ -8,7 +8,7 @@ import { TipRate } from "../../utils/types/TipRate";
 import { Employee } from "../../utils/types/Employee";
 
 const WeightedTippoolByRole = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [moneyHandlers, setMoneyHandlers] = useState<Employee[]>([]);
   const [nonMoneyHandlers, setNonMoneyHandlers] = useState<Employee[]>([]);
   const [tipsCollected, setTipsCollected] = useState<Employee[]>([]);
@@ -30,56 +30,58 @@ const WeightedTippoolByRole = () => {
   };
 
   useEffect(() => {
-    api
-      .get("/calculate/MoneyHandler", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setMoneyHandlers(res.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    api
-      .get("/calculate/NonMoneyHandler", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setNonMoneyHandlers(res.data);
-      });
+    try {
+      api
+        .get("/calculate/MoneyHandler", {
+          headers: {
+            Authorization: "Bearer " + user.accessToken,
+          },
+        })
+        .then((res) => {
+          setMoneyHandlers(res.data);
+        });
+      api
+        .get("/calculate/NonMoneyHandler", {
+          headers: {
+            Authorization: "Bearer " + user.accessToken,
+          },
+        })
+        .then((res) => {
+          setNonMoneyHandlers(res.data);
+        });
+      api
+        .get("/employer/rates", {
+          headers: {
+            Authorization: "Bearer " + user.accessToken,
+          },
+        })
+        .then((res) => {
+          setTipRates(res.data);
+        });
+    } catch (error) {
+      // Need to come back to this
+      if (error.response.status == 401) {
+        logout();
+      }
+    }
   }, []);
 
   useEffect(() => {
     setTipsCollected([...moneyHandlers, ...nonMoneyHandlers]);
   }, [moneyHandlers, nonMoneyHandlers]);
 
-  useEffect(() => {
-    api
-      .get("/employer/rates", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setTipRates(res.data);
-      });
-  }, []);
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await api.post("/calculate/report", tipsCollected, {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      });
-
-      //   console.log(typeof response.data);
-
+      const response = await api.post(
+        "/calculate/WeightedTippoolByRole",
+        tipsCollected,
+        {
+          headers: {
+            Authorization: "Bearer " + user.accessToken,
+          },
+        }
+      );
       navigate("/calculate/report", { state: response.data });
     } catch (error: any) {
       if (error.response) {
@@ -94,6 +96,11 @@ const WeightedTippoolByRole = () => {
         // `error.request` is an instance of XMLHttpRequest in the browser
         // and an instance of http.ClientRequest in node.js
         console.log(error.request);
+      } else if (error.response.status == 401) {
+        logout();
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser
+        // and an instance of http.ClientRequest in node.js
       } else {
         // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);
@@ -154,15 +161,14 @@ const WeightedTippoolByRole = () => {
             {nonMoneyHandlers.map(function (nonMoneyHandler, index) {
               return (
                 <div key={nonMoneyHandler.id}>
-                  <Form.Label>
-                    {nonMoneyHandler.name}
-                    <Form.Check
-                      type="checkbox"
-                      onChange={(event) =>
-                        handleNonMoneyHandlersChange(event, index)
-                      }
-                    ></Form.Check>
-                  </Form.Label>
+                  <Form.Check
+                    className="checkbox"
+                    label={nonMoneyHandler.name}
+                    type="switch"
+                    onChange={(event) =>
+                      handleNonMoneyHandlersChange(event, index)
+                    }
+                  ></Form.Check>
                 </div>
               );
             })}
@@ -183,3 +189,6 @@ const WeightedTippoolByRole = () => {
 };
 
 export default WeightedTippoolByRole;
+function logout() {
+  throw new Error("Function not implemented.");
+}

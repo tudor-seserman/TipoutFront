@@ -76,3 +76,7 @@ button:focus-visible {
   position: sticky;
   padding: 0.5rem 0.5rem;
 }
+
+.checkbox{
+  display:inline-block;
+}
