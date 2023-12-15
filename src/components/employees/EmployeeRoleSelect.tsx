@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import { SelectProps } from "../utils/types/SelectProps";
 
 const EmployeeRoleSelect = ({
+  value,
   submitting,
   options,
   handleChange,
@@ -40,6 +41,7 @@ const EmployeeRoleSelect = ({
       <Form.Label>
         What is their role?
         <Select
+          value={value}
           onChange={handleChange}
           options={options}
           isDisabled={submitting}

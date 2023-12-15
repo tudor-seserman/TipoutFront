@@ -8,14 +8,14 @@ import { Employee } from "../utils/types/Employee";
 const CurrentEmployees = () => {
   const { user } = useAuth();
   const [employees, setEmployees] = useState([]);
-  const [employeeID, setEmployeeID] = useState(0);
+  const [employeeID, setEmployeeID] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [employeeRole, setEmployeeRole] = useState("");
+  const [employeeRole, setEmployeeRole] = useState([]);
   const [employerRoles, setEmployerRoles] = useState([]);
-  const [employeeToDelete, setEmployeeToDelete] = useState(0);
+  const [employeeToDelete, setEmployeeToDelete] = useState("");
   const [employeesUpdated, setEmployeesUpdated] = useState(false);
-  const [idEdit, setIdEdit] = useState(0);
+  const [idEdit, setIdEdit] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const EditEmployeeDTO = {
@@ -37,7 +37,7 @@ const CurrentEmployees = () => {
         setEmployees(res.data);
       });
     api
-      .get("/employees", {
+      .get("/employer/rates", {
         headers: {
           Authorization: "Bearer " + user.accessToken,
         },
@@ -61,8 +61,8 @@ const CurrentEmployees = () => {
       alert(`${firstName} was edited`);
       setFirstName("");
       setLastName("");
-      setEmployeeRole("");
-      setIdEdit(0);
+      setEmployeeRole([]);
+      setIdEdit("");
       setEmployeesUpdated(!employeesUpdated);
     } catch (error: any) {
       setSubmitting(false);
@@ -139,7 +139,11 @@ const CurrentEmployees = () => {
                     <td>
                       {employeeObject.firstName} {employeeObject.lastName}
                     </td>
-                    <td>{employeeObject.roleDetail}</td>
+                    <td>
+                      {employeeObject.employeeRoles.map((role) => (
+                        <p key={role.id}>{role.name}</p>
+                      ))}
+                    </td>
                   </>
                 )}
                 {employeeObject.id == idEdit && (
@@ -179,11 +183,11 @@ const CurrentEmployees = () => {
                     onClick={(e) => {
                       if (employeeObject.id == idEdit) {
                         handleSubmitEdit(e);
-                        setIdEdit(0);
+                        setIdEdit("");
                       } else {
                         setFirstName(employeeObject.firstName);
                         setLastName(employeeObject.lastName);
-                        setEmployeeRole(employeeObject.roleDetail);
+                        setEmployeeRole(employeeObject.employeeRoles);
                         setIdEdit(employeeObject.id);
                       }
                     }}

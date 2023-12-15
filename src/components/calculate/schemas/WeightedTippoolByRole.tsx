@@ -32,22 +32,15 @@ const WeightedTippoolByRole = () => {
   useEffect(() => {
     try {
       api
-        .get("/calculate/MoneyHandler", {
+        .get("/calculate/EmployeeTipMap", {
           headers: {
             Authorization: "Bearer " + user.accessToken,
           },
         })
         .then((res) => {
-          setMoneyHandlers(res.data);
-        });
-      api
-        .get("/calculate/NonMoneyHandler", {
-          headers: {
-            Authorization: "Bearer " + user.accessToken,
-          },
-        })
-        .then((res) => {
-          setNonMoneyHandlers(res.data);
+          console.log(res.data);
+          setMoneyHandlers(res.data.moneyHandlers);
+          setNonMoneyHandlers(res.data.nonMoneyHandlers);
         });
       api
         .get("/employer/rates", {
@@ -189,6 +182,3 @@ const WeightedTippoolByRole = () => {
 };
 
 export default WeightedTippoolByRole;
-function logout() {
-  throw new Error("Function not implemented.");
-}

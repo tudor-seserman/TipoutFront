@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
-import Banner from "../Banner";
 import api from "../../API/axiosConfig";
 import { useAuth } from "../../hooks/useAuth";
 import EmployeeRoleSelect from "./EmployeeRoleSelect";
@@ -10,19 +8,18 @@ const AddEmployees = () => {
   const { user } = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [employeeRole, setEmployeeRole] = useState("");
+  const [employeeRole, setEmployeeRole] = useState("Please Select...");
   const [employerRoles, setEmployerRoles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     api
-      .get("/employees", {
+      .get("/employer/roles", {
         headers: {
           Authorization: "Bearer " + user.accessToken,
         },
       })
       .then((res) => {
-        console.log(res.data);
         setEmployerRoles(res.data);
       });
   }, []);
@@ -46,7 +43,7 @@ const AddEmployees = () => {
       alert(`${firstName} was added`);
       setFirstName("");
       setLastName("");
-      setEmployeeRole("");
+      setEmployeeRole("Please Select...");
       e.target.reset();
     } catch (error: any) {
       setSubmitting(false);
@@ -90,6 +87,7 @@ const AddEmployees = () => {
         </Form.Group>
         <EmployeeRoleSelect
           isDisabled={submitting}
+          value={{ value: employeeRole, label: employeeRole }}
           handleChange={(value) => setEmployeeRole(value.value)}
           options={employerRoles.map((t: string) => ({ value: t, label: t }))}
         />
