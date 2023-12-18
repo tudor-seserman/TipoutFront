@@ -3,7 +3,6 @@ import api from "../../../API/axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { useAuth } from "../../../hooks/useAuth";
-import { Button } from "react-bootstrap";
 import { TipRate } from "../../utils/types/TipRate";
 import { Employee } from "../../utils/types/Employee";
 
@@ -30,37 +29,40 @@ const EvenTippool = () => {
   };
 
   useEffect(() => {
-    api
-      .get("/calculate/MoneyHandler", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setMoneyHandlers(res.data);
-      });
-    api
-      .get("/calculate/NonMoneyHandler", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setNonMoneyHandlers(res.data);
-      });
-    api
-      .get("/employer/rates", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setTipRates(res.data);
-      });
+    try {
+      api
+        .get("/calculate/EmployeeTipMap", {
+          headers: {
+            Authorization: "Bearer " + user.accessToken,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setMoneyHandlers(res.data.moneyHandlers);
+          setNonMoneyHandlers(res.data.nonMoneyHandlers);
+        });
+      api
+        .get("/employer/rates", {
+          headers: {
+            Authorization: "Bearer " + user.accessToken,
+          },
+        })
+        .then((res) => {
+          setTipRates(res.data);
+        });
+    } catch (error) {
+      // Need to come back to this
+      if (error.response.status == 401) {
+        logout();
+      }
+    }
   }, []);
 
   useEffect(() => {
-    setTipsCollected([...moneyHandlers, ...nonMoneyHandlers]);
+    setTipsCollected({
+      moneyHandlers: moneyHandlers,
+      nonMoneyHandlers: nonMoneyHandlers,
+    });
   }, [moneyHandlers, nonMoneyHandlers]);
 
   const handleSubmit = async (e: any) => {
