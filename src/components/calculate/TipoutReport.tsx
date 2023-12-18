@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Banner from "../Banner";
 import Table from "react-bootstrap/Table";
 
 const TipoutReport = () => {
   const { state } = useLocation();
+  const [reportEntry, setReportEntry] = useState({});
+
+  useEffect(() => {
+    setReportEntry(state.employeesAndTipsOwed);
+  }, [state]);
 
   return (
     <>
@@ -17,11 +21,11 @@ const TipoutReport = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.entries(state).map(function ([key, val], index) {
+          {Object.entries(reportEntry).map(function ([key, val]) {
             return (
-              <tr key={index}>
-                <td>{key}</td>
-                <td>{val}</td>
+              <tr key={key}>
+                <td>{val[0]}</td>
+                <td>{val[1]}</td>
               </tr>
             );
           })}

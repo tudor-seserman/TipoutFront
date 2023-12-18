@@ -11,7 +11,7 @@ const WeightedTippoolByRole = () => {
   const { user, logout } = useAuth();
   const [moneyHandlers, setMoneyHandlers] = useState<Employee[]>([]);
   const [nonMoneyHandlers, setNonMoneyHandlers] = useState<Employee[]>([]);
-  const [tipsCollected, setTipsCollected] = useState<Employee[]>([]);
+  const [tipsCollected, setTipsCollected] = useState({});
   const [tipRates, setTipRates] = useState<TipRate[]>([]);
   const navigate = useNavigate();
 
@@ -60,7 +60,10 @@ const WeightedTippoolByRole = () => {
   }, []);
 
   useEffect(() => {
-    setTipsCollected([...moneyHandlers, ...nonMoneyHandlers]);
+    setTipsCollected({
+      moneyHandlers: moneyHandlers,
+      nonMoneyHandlers: nonMoneyHandlers,
+    });
   }, [moneyHandlers, nonMoneyHandlers]);
 
   const handleSubmit = async (e: any) => {
