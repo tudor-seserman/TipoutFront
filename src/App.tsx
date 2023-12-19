@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import api from "./API/axiosConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Register from "./components/login/Register";
 import Login from "./components/login/Login";
@@ -10,7 +8,6 @@ import AddEmployees from "./components/employees/AddEmployees";
 import { ProtectedRoute } from "./components/authentication/ProtectedRoute";
 import TipoutReport from "./components/calculate/TipoutReport";
 import CurrentEmployees from "./components/employees/CurrentEmployees";
-import Banner from "./components/Banner";
 import Settings from "./components/settings/Settings";
 import InputCollectedTips from "./components/calculate/InputCollectedTips";
 

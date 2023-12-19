@@ -3,6 +3,7 @@ import api from "../../API/axiosConfig";
 import { useAuth } from "../../hooks/useAuth";
 import EmployeeRoleSelect from "./EmployeeRoleSelect";
 import Form from "react-bootstrap/Form";
+import AlertDismissible from "../utils/alerts/AlertDismissible";
 
 const AddEmployees = () => {
   const { user } = useAuth();
@@ -11,6 +12,7 @@ const AddEmployees = () => {
   const [employeeRole, setEmployeeRole] = useState("Please Select...");
   const [employerRoles, setEmployerRoles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [newEmployee, setNewEmployee] = useState("");
 
   useEffect(() => {
     api
@@ -40,7 +42,7 @@ const AddEmployees = () => {
         },
       });
       setSubmitting(false);
-      alert(`${firstName} was added`);
+      setNewEmployee(firstName + " " + lastName);
       setFirstName("");
       setLastName("");
       setEmployeeRole("Please Select...");
@@ -68,6 +70,9 @@ const AddEmployees = () => {
 
   return (
     <>
+      {newEmployee && (
+        <AlertDismissible text={`${newEmployee} was added`} color="success" />
+      )}
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Control

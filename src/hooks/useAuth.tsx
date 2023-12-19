@@ -2,10 +2,8 @@ import React, { createContext, useContext, useMemo, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 import api from "../API/axiosConfig";
+import { ContextProps } from "../components/utils/types/ContextProps";
 
-interface AuthContextProps {
-  children: React.ReactNode;
-}
 interface AuthProviderType {
   user: { keyName: "token"; accessToken: "" };
   login: (loginFormDTO: {}) => NavigateFunction;
@@ -14,7 +12,7 @@ interface AuthProviderType {
 
 const AuthContext = createContext({});
 
-export const AuthProvider = ({ children }: AuthContextProps) => {
+export const AuthProvider = ({ children }: ContextProps) => {
   const [user, setUser] = useLocalStorage({
     keyName: "token",
     accessToken: "",
@@ -22,7 +20,6 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
 
   const navigate = useNavigate();
 
-  // call this function when you want to authenticate the user
   const login = async (loginFormDTO: {}) => {
     try {
       const response = await api.post("auth/login", loginFormDTO, {
@@ -35,7 +32,6 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
         keyName: "token",
         accessToken: response.data.accessToken,
       });
-      // localStorage.setItem("token", response.data.accessToken);
       if (localStorage.getItem("token")) {
         return navigate("/");
       }
@@ -60,7 +56,6 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
     }
   };
 
-  // call this function to sign out logged in user
   const logout = () => {
     setUser(null);
     navigate("/", { replace: true });

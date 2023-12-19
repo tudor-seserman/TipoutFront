@@ -4,19 +4,29 @@ import { useAuth } from "../../hooks/useAuth";
 import { Button, Form, Table } from "react-bootstrap";
 import EmployeeRoleSelect from "./EmployeeRoleSelect";
 import { Employee } from "../utils/types/Employee";
+import AlertDismissible from "../utils/alerts/AlertDismissible";
+import { set } from "react-hook-form";
+import { useEmployerInfo } from "../../hooks/useEmployerInfo";
 
 const CurrentEmployees = () => {
   const { user } = useAuth();
-  const [employees, setEmployees] = useState([]);
+  const {
+    tipRates,
+    setTipRates,
+    employees,
+    setEmployees,
+    refresh,
+    setRefresh,
+  } = useEmployerInfo();
   const [employeeID, setEmployeeID] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [employeeRole, setEmployeeRole] = useState([]);
-  const [employerRoles, setEmployerRoles] = useState([]);
   const [employeeToDelete, setEmployeeToDelete] = useState("");
-  const [employeesUpdated, setEmployeesUpdated] = useState(false);
   const [idEdit, setIdEdit] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [alertInfo, setAlertInfo] = useState("");
+  const [alertColor, setAlertColor] = useState("");
 
   const EditEmployeeDTO = {
     idEdit,
@@ -24,29 +34,6 @@ const CurrentEmployees = () => {
     lastName,
     employeeRole,
   };
-
-  useEffect(() => {
-    api
-      .get("/employees/current", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setEmployees(res.data);
-      });
-    api
-      .get("/employer/rates", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setEmployerRoles(res.data);
-      });
-  }, [employeesUpdated]);
 
   const handleSubmitEdit = async (e: any) => {
     e.preventDefault();
@@ -58,12 +45,13 @@ const CurrentEmployees = () => {
         },
       });
       setSubmitting(false);
-      alert(`${firstName} was edited`);
+      setAlertInfo(`${firstName} ${lastName} was edited`);
+      setAlertColor("warning");
       setFirstName("");
       setLastName("");
       setEmployeeRole([]);
       setIdEdit("");
-      setEmployeesUpdated(!employeesUpdated);
+      setRefresh(!refresh);
     } catch (error: any) {
       setSubmitting(false);
       if (error.response) {
@@ -97,7 +85,8 @@ const CurrentEmployees = () => {
           },
         }
       );
-      setEmployeesUpdated(!employeesUpdated);
+      setAlertColor("danger");
+      setRefresh(!refresh);
     } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -120,6 +109,9 @@ const CurrentEmployees = () => {
 
   return (
     <>
+      {alertInfo && (
+        <AlertDismissible text={alertInfo} color={alertColor} show={true} />
+      )}
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -200,9 +192,20 @@ const CurrentEmployees = () => {
                     <Form.Control
                       type="submit"
                       value="Delete Employee"
-                      onClick={(event) =>
-                        setEmployeeToDelete(employeeObject.id)
-                      }
+                      onClick={(e) => {
+                        if (
+                          window.confirm(
+                            `Are You Sure You Want To Delete ${employeeObject.firstName} `
+                          )
+                        ) {
+                          setEmployeeToDelete(employeeObject.id);
+                          setAlertInfo(
+                            `${employeeObject.firstName} ${employeeObject.lastName} was deleted`
+                          );
+                        } else {
+                          e.preventDefault();
+                        }
+                      }}
                     />
                   </Form>
                 </td>

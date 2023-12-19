@@ -6,13 +6,19 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Button } from "react-bootstrap";
 import { TipRate } from "../../utils/types/TipRate";
 import { Employee } from "../../utils/types/Employee";
+import { useEmployerInfo } from "../../../hooks/useEmployerInfo";
 
 const WeightedTippoolByRole = () => {
   const { user, logout } = useAuth();
-  const [moneyHandlers, setMoneyHandlers] = useState<Employee[]>([]);
-  const [nonMoneyHandlers, setNonMoneyHandlers] = useState<Employee[]>([]);
+  const {
+    moneyHandlers,
+    setMoneyHandlers,
+    nonMoneyHandlers,
+    setNonMoneyHandlers,
+    tipRates,
+    setTipRates,
+  } = useEmployerInfo();
   const [tipsCollected, setTipsCollected] = useState({});
-  const [tipRates, setTipRates] = useState<TipRate[]>([]);
   const navigate = useNavigate();
 
   const handleMoneyHandlersChange = (event, index) => {
@@ -28,36 +34,6 @@ const WeightedTippoolByRole = () => {
       : (data[index]["tips"] = null);
     setNonMoneyHandlers(data);
   };
-
-  useEffect(() => {
-    try {
-      api
-        .get("/calculate/EmployeeTipMap", {
-          headers: {
-            Authorization: "Bearer " + user.accessToken,
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          setMoneyHandlers(res.data.moneyHandlers);
-          setNonMoneyHandlers(res.data.nonMoneyHandlers);
-        });
-      api
-        .get("/employer/rates", {
-          headers: {
-            Authorization: "Bearer " + user.accessToken,
-          },
-        })
-        .then((res) => {
-          setTipRates(res.data);
-        });
-    } catch (error) {
-      // Need to come back to this
-      if (error.response.status == 401) {
-        logout();
-      }
-    }
-  }, []);
 
   useEffect(() => {
     setTipsCollected({

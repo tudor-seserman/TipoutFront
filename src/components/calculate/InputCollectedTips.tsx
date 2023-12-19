@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import WeightedTippoolByRole from "./schemas/WeightedTippoolByRole";
 import SchemaSelector from "./SchemaSelector";
 import { Schemas } from "../utils/Schemas";
 import SchemaLanding from "./SchemaLanding";
