@@ -1,5 +1,5 @@
 import React from "react";
-import LoginOrRegistration from "./login/LoginOrRegistration";
+import LoginOrRegistration from "../login/LoginOrRegistration";
 
 const Home = () => {
   return (

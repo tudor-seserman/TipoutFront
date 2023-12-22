@@ -1,23 +1,24 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/home/Home";
 import Register from "./components/login/Register";
 import Login from "./components/login/Login";
 import AddEmployees from "./components/employees/AddEmployees";
-import { ProtectedRoute } from "./components/authentication/ProtectedRoute";
+import { ProtectedRoute } from "./components/routeAuthentication/ProtectedRoute";
 import TipoutReport from "./components/calculate/TipoutReport";
 import CurrentEmployees from "./components/employees/CurrentEmployees";
 import Settings from "./components/settings/Settings";
 import InputCollectedTips from "./components/calculate/InputCollectedTips";
+import { OpenRoute } from "./components/routeAuthentication/OpenRoute";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<Register />}></Route>
-      <Route path="*" element={<Navigate to="/" replace />}></Route>
+      <Route path="/" element={<OpenRoute><Home /></OpenRoute>}></Route>
+      <Route path="/login" element={<OpenRoute><Login /></OpenRoute>}></Route>
+      <Route path="/register" element={<OpenRoute><Register /></OpenRoute>}></Route>
+      <Route path="*" element={<OpenRoute><Navigate to="/" replace /></OpenRoute>}></Route>
       <Route
         path="/employees/*"
         element={

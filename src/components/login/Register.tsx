@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "../../API/axiosConfig";
-import Banner from "../Banner";
+import Banner from "../navBars/Banner";
 import Form from "react-bootstrap/Form";
 import { redirect, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";

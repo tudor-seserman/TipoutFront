@@ -4,8 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { useAuth } from "../../../hooks/useAuth";
 import { Button } from "react-bootstrap";
-import { TipRate } from "../../utils/types/TipRate";
-import { Employee } from "../../utils/types/Employee";
 import { useEmployerInfo } from "../../../hooks/useEmployerInfo";
 
 const WeightedTippoolByRole = () => {

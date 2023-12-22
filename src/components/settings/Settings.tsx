@@ -9,7 +9,7 @@ const Settings = () => {
   const [tipRates, setTipRates] = useState<TipRate[]>([]);
   const [tipRatesToEdit, setTipRatesToEdit] = useState<TipRate[]>([]);
 
-  const handleTipRatesToEditChange = (event, index) => {
+  const handleTipRatesToEditChange = (event: any, index: number) => {
     // tipRatesToEdit.push({ roleName: role, tipRate: event.target.value });
     let data = [...tipRates];
     data[index]["tipRate"] = Number(event.target.value);

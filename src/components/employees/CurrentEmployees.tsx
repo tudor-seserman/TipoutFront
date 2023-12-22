@@ -1,27 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import api from "../../API/axiosConfig";
 import { useAuth } from "../../hooks/useAuth";
 import { Button, Form, Table } from "react-bootstrap";
-import EmployeeRoleSelect from "./EmployeeRoleSelect";
 import { Employee } from "../utils/types/Employee";
 import AlertDismissible from "../utils/alerts/AlertDismissible";
-import { set } from "react-hook-form";
 import { useEmployerInfo } from "../../hooks/useEmployerInfo";
+import { EmployeeRoles } from "../utils/types/EmployeeRoles";
 
 const CurrentEmployees = () => {
   const { user } = useAuth();
   const {
-    tipRates,
-    setTipRates,
     employees,
-    setEmployees,
     refresh,
     setRefresh,
   } = useEmployerInfo();
   const [employeeID, setEmployeeID] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [employeeRole, setEmployeeRole] = useState([]);
+  const [employeeRole, setEmployeeRole] = useState<EmployeeRoles[]>([]);
   const [employeeToDelete, setEmployeeToDelete] = useState("");
   const [idEdit, setIdEdit] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -109,6 +105,7 @@ const CurrentEmployees = () => {
 
   return (
     <>
+      <br />
       {alertInfo && (
         <AlertDismissible text={alertInfo} color={alertColor} show={true} />
       )}
@@ -172,6 +169,8 @@ const CurrentEmployees = () => {
                 )}
                 <td>
                   <Button
+                    size="sm"
+                    variant="outline-warning"
                     onClick={(e) => {
                       if (employeeObject.id == idEdit) {
                         handleSubmitEdit(e);
@@ -184,30 +183,31 @@ const CurrentEmployees = () => {
                       }
                     }}
                   >
-                    edit
+                    Edit
                   </Button>
                 </td>
                 <td>
-                  <Form onSubmit={handleSubmitDelete}>
-                    <Form.Control
-                      type="submit"
-                      value="Delete Employee"
-                      onClick={(e) => {
-                        if (
-                          window.confirm(
-                            `Are You Sure You Want To Delete ${employeeObject.firstName} `
-                          )
-                        ) {
-                          setEmployeeToDelete(employeeObject.id);
-                          setAlertInfo(
-                            `${employeeObject.firstName} ${employeeObject.lastName} was deleted`
-                          );
-                        } else {
-                          e.preventDefault();
-                        }
-                      }}
-                    />
-                  </Form>
+                  <Button
+                    size="sm"
+                    variant="outline-danger"
+                    onClick={(e) => {
+                      setEmployeeToDelete(employeeObject.id);
+                      if (
+                        window.confirm(
+                          `Are You Sure You Want To Delete ${employeeObject.firstName} ${employeeObject.lastName}`
+                        )
+                      ) {
+                        handleSubmitDelete(e);
+                        setAlertInfo(
+                          `${employeeObject.firstName} ${employeeObject.lastName} was deleted`
+                        );
+                      } else {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    Delete Employee
+                  </Button>
                 </td>
               </tr>
             );

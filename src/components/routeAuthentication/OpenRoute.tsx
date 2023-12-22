@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import Login from "../login/Login";
 
 interface OpenRouteProps {
     children: JSX.Element;
@@ -8,7 +6,6 @@ interface OpenRouteProps {
 
 export const OpenRoute = ({ children }: OpenRouteProps) => {
     const { user, setUser } = useAuth();
-    const navigate = useNavigate();
 
     const parseJwt = (token: String) => {
         try {

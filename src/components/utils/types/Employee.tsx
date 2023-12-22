@@ -5,4 +5,5 @@ export type Employee = {
   firstName: string;
   lastName: string;
   employeeRoles: EmployeeRoles[];
+  tips: number;
 };
