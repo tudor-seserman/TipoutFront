@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { ActionMeta } from "react-select";
+import Select from "react-select";
 import Form from "react-bootstrap/Form";
 import { SelectProps } from "../utils/types/SelectProps";
 

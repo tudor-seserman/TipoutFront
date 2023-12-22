@@ -1,10 +1,10 @@
 import React from "react";
-import NavBar from "./navBars/NavBar";
-import { useAuth } from "../hooks/useAuth";
-import LoggedInNavBar from "./navBars/LoggedInNavBar";
+import NavBar from "./NavBar";
+import { useAuth } from "../../hooks/useAuth";
+import LoggedInNavBar from "./LoggedInNavBar";
 import { Container } from "react-bootstrap";
 
-const Banner = () => {
+const Banner = ({ children }) => {
   const { user } = useAuth();
   return (
     <Container>
@@ -12,6 +12,7 @@ const Banner = () => {
         {!user && <NavBar />}
         {user && <LoggedInNavBar />}
       </span>
+      {children}
     </Container>
   );
 };

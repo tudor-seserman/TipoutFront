@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import api from "../../API/axiosConfig";
 import { useAuth } from "../../hooks/useAuth";
 import { Button, Form, Table } from "react-bootstrap";
-import EmployeeRoleSelect from "./EmployeeRoleSelect";
 import { Employee } from "../utils/types/Employee";
+import AlertDismissible from "../utils/alerts/AlertDismissible";
+import { useEmployerInfo } from "../../hooks/useEmployerInfo";
+import { EmployeeRoles } from "../utils/types/EmployeeRoles";
 
 const CurrentEmployees = () => {
   const { user } = useAuth();
-  const [employees, setEmployees] = useState([]);
-  const [employeeID, setEmployeeID] = useState(0);
+  const {
+    employees,
+    refresh,
+    setRefresh,
+  } = useEmployerInfo();
+  const [employeeID, setEmployeeID] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [employeeRole, setEmployeeRole] = useState("");
-  const [employerRoles, setEmployerRoles] = useState([]);
-  const [employeeToDelete, setEmployeeToDelete] = useState(0);
-  const [employeesUpdated, setEmployeesUpdated] = useState(false);
-  const [idEdit, setIdEdit] = useState(0);
+  const [employeeRole, setEmployeeRole] = useState<EmployeeRoles[]>([]);
+  const [employeeToDelete, setEmployeeToDelete] = useState("");
+  const [idEdit, setIdEdit] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [alertInfo, setAlertInfo] = useState("");
+  const [alertColor, setAlertColor] = useState("");
 
   const EditEmployeeDTO = {
     idEdit,
@@ -24,29 +30,6 @@ const CurrentEmployees = () => {
     lastName,
     employeeRole,
   };
-
-  useEffect(() => {
-    api
-      .get("/employees/current", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setEmployees(res.data);
-      });
-    api
-      .get("/employees", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setEmployerRoles(res.data);
-      });
-  }, [employeesUpdated]);
 
   const handleSubmitEdit = async (e: any) => {
     e.preventDefault();
@@ -58,12 +41,13 @@ const CurrentEmployees = () => {
         },
       });
       setSubmitting(false);
-      alert(`${firstName} was edited`);
+      setAlertInfo(`${firstName} ${lastName} was edited`);
+      setAlertColor("warning");
       setFirstName("");
       setLastName("");
-      setEmployeeRole("");
-      setIdEdit(0);
-      setEmployeesUpdated(!employeesUpdated);
+      setEmployeeRole([]);
+      setIdEdit("");
+      setRefresh(!refresh);
     } catch (error: any) {
       setSubmitting(false);
       if (error.response) {
@@ -97,7 +81,8 @@ const CurrentEmployees = () => {
           },
         }
       );
-      setEmployeesUpdated(!employeesUpdated);
+      setAlertColor("danger");
+      setRefresh(!refresh);
     } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -120,6 +105,10 @@ const CurrentEmployees = () => {
 
   return (
     <>
+      <br />
+      {alertInfo && (
+        <AlertDismissible text={alertInfo} color={alertColor} show={true} />
+      )}
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -139,7 +128,11 @@ const CurrentEmployees = () => {
                     <td>
                       {employeeObject.firstName} {employeeObject.lastName}
                     </td>
-                    <td>{employeeObject.roleDetail}</td>
+                    <td>
+                      {employeeObject.employeeRoles.map((role) => (
+                        <p key={role.id}>{role.name}</p>
+                      ))}
+                    </td>
                   </>
                 )}
                 {employeeObject.id == idEdit && (
@@ -176,31 +169,45 @@ const CurrentEmployees = () => {
                 )}
                 <td>
                   <Button
+                    size="sm"
+                    variant="outline-warning"
                     onClick={(e) => {
                       if (employeeObject.id == idEdit) {
                         handleSubmitEdit(e);
-                        setIdEdit(0);
+                        setIdEdit("");
                       } else {
                         setFirstName(employeeObject.firstName);
                         setLastName(employeeObject.lastName);
-                        setEmployeeRole(employeeObject.roleDetail);
+                        setEmployeeRole(employeeObject.employeeRoles);
                         setIdEdit(employeeObject.id);
                       }
                     }}
                   >
-                    edit
+                    Edit
                   </Button>
                 </td>
                 <td>
-                  <Form onSubmit={handleSubmitDelete}>
-                    <Form.Control
-                      type="submit"
-                      value="Delete Employee"
-                      onClick={(event) =>
-                        setEmployeeToDelete(employeeObject.id)
+                  <Button
+                    size="sm"
+                    variant="outline-danger"
+                    onClick={(e) => {
+                      setEmployeeToDelete(employeeObject.id);
+                      if (
+                        window.confirm(
+                          `Are You Sure You Want To Delete ${employeeObject.firstName} ${employeeObject.lastName}`
+                        )
+                      ) {
+                        handleSubmitDelete(e);
+                        setAlertInfo(
+                          `${employeeObject.firstName} ${employeeObject.lastName} was deleted`
+                        );
+                      } else {
+                        e.preventDefault();
                       }
-                    />
-                  </Form>
+                    }}
+                  >
+                    Delete Employee
+                  </Button>
                 </td>
               </tr>
             );

@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useEffect } from "react";
 import Login from "../login/Login";
 
 interface ProtectedRouteProps {
@@ -15,6 +14,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (e) {
+      logout();
       navigate("/login");
     }
   };

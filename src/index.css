@@ -10,7 +10,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust:100%;
 }
 
 
@@ -70,6 +69,7 @@ button:focus-visible {
   height: 70px;
   width: 100%;
   display: flex;
+  z-index: 100;
   /* place-items:left; */
   align-items: first baseline;
   position: -webkit-sticky;

@@ -3,16 +3,20 @@ import api from "../../../API/axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { useAuth } from "../../../hooks/useAuth";
-import { Button } from "react-bootstrap";
-import { TipRate } from "../../utils/types/TipRate";
 import { Employee } from "../../utils/types/Employee";
+import { useEmployerInfo } from "../../../hooks/useEmployerInfo";
 
 const EvenTippool = () => {
   const { user } = useAuth();
-  const [moneyHandlers, setMoneyHandlers] = useState<Employee[]>([]);
-  const [nonMoneyHandlers, setNonMoneyHandlers] = useState<Employee[]>([]);
+  const {
+    moneyHandlers,
+    setMoneyHandlers,
+    nonMoneyHandlers,
+    setNonMoneyHandlers,
+    calculateTips,
+    setCalculateTips
+  } = useEmployerInfo();
   const [tipsCollected, setTipsCollected] = useState<Employee[]>([]);
-  const [tipRates, setTipRates] = useState<TipRate[]>([]);
   const navigate = useNavigate();
 
   const handleMoneyHandlersChange = (event, index) => {
@@ -30,37 +34,10 @@ const EvenTippool = () => {
   };
 
   useEffect(() => {
-    api
-      .get("/calculate/MoneyHandler", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setMoneyHandlers(res.data);
-      });
-    api
-      .get("/calculate/NonMoneyHandler", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setNonMoneyHandlers(res.data);
-      });
-    api
-      .get("/employer/rates", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setTipRates(res.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    setTipsCollected([...moneyHandlers, ...nonMoneyHandlers]);
+    setTipsCollected({
+      moneyHandlers: moneyHandlers,
+      nonMoneyHandlers: nonMoneyHandlers,
+    });
   }, [moneyHandlers, nonMoneyHandlers]);
 
   const handleSubmit = async (e: any) => {
@@ -71,9 +48,7 @@ const EvenTippool = () => {
           Authorization: "Bearer " + user.accessToken,
         },
       });
-
-      //   console.log(typeof response.data);
-
+      setCalculateTips(!calculateTips)
       navigate("/calculate/report", { state: response.data });
     } catch (error: any) {
       if (error.response) {

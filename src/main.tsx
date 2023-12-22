@@ -5,17 +5,21 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap-grid.min.css";
 import { AuthProvider } from "./hooks/useAuth.tsx";
 import { BrowserRouter } from "react-router-dom";
-import Banner from "./components/Banner.tsx";
+import Banner from "./components/navBars/Banner.tsx";
 import BaseStyle from "./components/styles/BaseStyle.tsx";
+import { EmployerContextProvider } from "./hooks/useEmployerInfo.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <Banner />
-        <BaseStyle>
-          <App />
-        </BaseStyle>
+        <EmployerContextProvider>
+          <Banner>
+            <BaseStyle>
+              <App />
+            </BaseStyle>
+          </Banner>
+        </EmployerContextProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

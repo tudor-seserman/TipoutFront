@@ -1,6 +1,9 @@
+import { EmployeeRoles } from "./EmployeeRoles";
+
 export type Employee = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
-  roleDetail: string;
+  employeeRoles: EmployeeRoles[];
+  tips: number;
 };

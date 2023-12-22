@@ -4,15 +4,21 @@ import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { useAuth } from "../../../hooks/useAuth";
 import { Button } from "react-bootstrap";
-import { TipRate } from "../../utils/types/TipRate";
-import { Employee } from "../../utils/types/Employee";
+import { useEmployerInfo } from "../../../hooks/useEmployerInfo";
 
 const WeightedTippoolByRole = () => {
   const { user, logout } = useAuth();
-  const [moneyHandlers, setMoneyHandlers] = useState<Employee[]>([]);
-  const [nonMoneyHandlers, setNonMoneyHandlers] = useState<Employee[]>([]);
-  const [tipsCollected, setTipsCollected] = useState<Employee[]>([]);
-  const [tipRates, setTipRates] = useState<TipRate[]>([]);
+  const {
+    moneyHandlers,
+    setMoneyHandlers,
+    nonMoneyHandlers,
+    setNonMoneyHandlers,
+    tipRates,
+    setTipRates,
+    calculateTips,
+    setCalculateTips
+  } = useEmployerInfo();
+  const [tipsCollected, setTipsCollected] = useState({});
   const navigate = useNavigate();
 
   const handleMoneyHandlersChange = (event, index) => {
@@ -30,44 +36,10 @@ const WeightedTippoolByRole = () => {
   };
 
   useEffect(() => {
-    try {
-      api
-        .get("/calculate/MoneyHandler", {
-          headers: {
-            Authorization: "Bearer " + user.accessToken,
-          },
-        })
-        .then((res) => {
-          setMoneyHandlers(res.data);
-        });
-      api
-        .get("/calculate/NonMoneyHandler", {
-          headers: {
-            Authorization: "Bearer " + user.accessToken,
-          },
-        })
-        .then((res) => {
-          setNonMoneyHandlers(res.data);
-        });
-      api
-        .get("/employer/rates", {
-          headers: {
-            Authorization: "Bearer " + user.accessToken,
-          },
-        })
-        .then((res) => {
-          setTipRates(res.data);
-        });
-    } catch (error) {
-      // Need to come back to this
-      if (error.response.status == 401) {
-        logout();
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    setTipsCollected([...moneyHandlers, ...nonMoneyHandlers]);
+    setTipsCollected({
+      moneyHandlers: moneyHandlers,
+      nonMoneyHandlers: nonMoneyHandlers,
+    });
   }, [moneyHandlers, nonMoneyHandlers]);
 
   const handleSubmit = async (e: any) => {
@@ -82,9 +54,15 @@ const WeightedTippoolByRole = () => {
           },
         }
       );
+      setCalculateTips(!calculateTips)
       navigate("/calculate/report", { state: response.data });
     } catch (error: any) {
-      if (error.response) {
+      console.log(error.response.request.status)
+      if (error.response.request.status == 401) {
+        alert("Your session has expired. Please log in again.");
+        logout();
+      }
+      else if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         alert("No tips were declared.");
@@ -96,11 +74,6 @@ const WeightedTippoolByRole = () => {
         // `error.request` is an instance of XMLHttpRequest in the browser
         // and an instance of http.ClientRequest in node.js
         console.log(error.request);
-      } else if (error.response.status == 401) {
-        logout();
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser
-        // and an instance of http.ClientRequest in node.js
       } else {
         // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);
@@ -189,6 +162,3 @@ const WeightedTippoolByRole = () => {
 };
 
 export default WeightedTippoolByRole;
-function logout() {
-  throw new Error("Function not implemented.");
-}
