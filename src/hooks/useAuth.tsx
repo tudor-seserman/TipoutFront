@@ -8,6 +8,7 @@ interface AuthProviderType {
   user: { keyName: "token"; accessToken: "" };
   login: (loginFormDTO: {}) => NavigateFunction;
   logout: () => null;
+  setUser: any
 }
 
 const AuthContext = createContext({});

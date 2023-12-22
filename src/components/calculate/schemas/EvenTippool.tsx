@@ -13,6 +13,8 @@ const EvenTippool = () => {
     setMoneyHandlers,
     nonMoneyHandlers,
     setNonMoneyHandlers,
+    calculateTips,
+    setCalculateTips
   } = useEmployerInfo();
   const [tipsCollected, setTipsCollected] = useState<Employee[]>([]);
   const navigate = useNavigate();
@@ -46,9 +48,7 @@ const EvenTippool = () => {
           Authorization: "Bearer " + user.accessToken,
         },
       });
-
-      //   console.log(typeof response.data);
-
+      setCalculateTips(!calculateTips)
       navigate("/calculate/report", { state: response.data });
     } catch (error: any) {
       if (error.response) {

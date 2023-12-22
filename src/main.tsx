@@ -14,10 +14,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <BrowserRouter>
       <AuthProvider>
         <EmployerContextProvider>
-          <Banner />
-          <BaseStyle>
-            <App />
-          </BaseStyle>
+          <Banner>
+            <BaseStyle>
+              <App />
+            </BaseStyle>
+          </Banner>
         </EmployerContextProvider>
       </AuthProvider>
     </BrowserRouter>

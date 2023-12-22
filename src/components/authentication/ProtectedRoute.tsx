@@ -14,6 +14,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (e) {
+      logout();
       navigate("/login");
     }
   };

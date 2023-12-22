@@ -11,14 +11,14 @@ const LoggedInNavBar = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/">Tipout</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">Tipout</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/employees/add">Add Employee</Nav.Link>
-            <Nav.Link href="/employees/current">Employees</Nav.Link>
-            <Nav.Link href="/calculate">Calculate</Nav.Link>
-            <Nav.Link href="/settings">Settings</Nav.Link>
+            <Nav.Link as={Link} to="/employees/add">Add Employee</Nav.Link>
+            <Nav.Link as={Link} to="/employees/current">Employees</Nav.Link>
+            <Nav.Link as={Link} to="/calculate">Calculate</Nav.Link>
+            <Nav.Link as={Link} to="/settings">Settings</Nav.Link>
             <Nav.Link onClick={() => logout()}>Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>

@@ -17,6 +17,8 @@ const WeightedTippoolByRole = () => {
     setNonMoneyHandlers,
     tipRates,
     setTipRates,
+    calculateTips,
+    setCalculateTips
   } = useEmployerInfo();
   const [tipsCollected, setTipsCollected] = useState({});
   const navigate = useNavigate();
@@ -54,9 +56,15 @@ const WeightedTippoolByRole = () => {
           },
         }
       );
+      setCalculateTips(!calculateTips)
       navigate("/calculate/report", { state: response.data });
     } catch (error: any) {
-      if (error.response) {
+      console.log(error.response.request.status)
+      if (error.response.request.status == 401) {
+        alert("Your session has expired. Please log in again.");
+        logout();
+      }
+      else if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         alert("No tips were declared.");
@@ -68,11 +76,6 @@ const WeightedTippoolByRole = () => {
         // `error.request` is an instance of XMLHttpRequest in the browser
         // and an instance of http.ClientRequest in node.js
         console.log(error.request);
-      } else if (error.response.status == 401) {
-        logout();
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser
-        // and an instance of http.ClientRequest in node.js
       } else {
         // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);

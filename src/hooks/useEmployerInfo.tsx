@@ -22,6 +22,8 @@ interface EmployerContextProviderType {
   setEmployees: React.Dispatch<React.SetStateAction<Employee[]>>;
   refresh: boolean;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+  calculateTips: boolean;
+  setCalculateTips: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EmployerContext = createContext({});
@@ -33,6 +35,8 @@ export const EmployerContextProvider = ({ children }: ContextProps) => {
   const [tipRates, setTipRates] = useState<TipRate[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [refresh, setRefresh] = useState(false);
+  const [calculateTips, setCalculateTips] = useState(false);
+
 
   useEffect(() => {
     try {
@@ -43,10 +47,14 @@ export const EmployerContextProvider = ({ children }: ContextProps) => {
           },
         })
         .then((res) => {
-          console.log(res.data);
           setMoneyHandlers(res.data.moneyHandlers);
           setNonMoneyHandlers(res.data.nonMoneyHandlers);
         });
+    } catch (error) { }
+  }, [user, calculateTips]);
+
+  useEffect(() => {
+    try {
       api
         .get("/employer/rates", {
           headers: {
@@ -56,6 +64,11 @@ export const EmployerContextProvider = ({ children }: ContextProps) => {
         .then((res) => {
           setTipRates(res.data);
         });
+    } catch (error) { }
+  }, [user]);
+
+  useEffect(() => {
+    try {
       api
         .get("/employees/current", {
           headers: {
@@ -65,8 +78,8 @@ export const EmployerContextProvider = ({ children }: ContextProps) => {
         .then((res) => {
           setEmployees(res.data);
         });
-    } catch (error) {}
-  }, [refresh]);
+    } catch (error) { }
+  }, [refresh, user])
 
   const value = useMemo(
     () => ({
@@ -80,6 +93,8 @@ export const EmployerContextProvider = ({ children }: ContextProps) => {
       setEmployees,
       refresh,
       setRefresh,
+      calculateTips,
+      setCalculateTips
     }),
     [moneyHandlers, nonMoneyHandlers, employees, tipRates, refresh]
   );
