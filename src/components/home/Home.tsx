@@ -1,7 +1,11 @@
 import React from "react";
 import LoginOrRegistration from "../login/LoginOrRegistration";
+import { useAuth } from "../../hooks/useAuth";
 
 const Home = () => {
+  const { user } = useAuth();
+
+
   return (
     <>
       <br />
@@ -11,7 +15,7 @@ const Home = () => {
       </h3>
       <br />
 
-      <LoginOrRegistration />
+      {!user && <LoginOrRegistration />}
     </>
   );
 };

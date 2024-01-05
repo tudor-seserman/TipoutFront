@@ -4,9 +4,11 @@ import { useAuth } from "../../hooks/useAuth";
 import EmployeeRoleSelect from "./EmployeeRoleSelect";
 import Form from "react-bootstrap/Form";
 import AlertDismissible from "../utils/alerts/AlertDismissible";
+import { useEmployerInfo } from "../../hooks/useEmployerInfo";
 
 const AddEmployees = () => {
   const { user } = useAuth();
+  const { setRefresh } = useEmployerInfo();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [employeeRole, setEmployeeRole] = useState("Please Select...");
@@ -46,6 +48,7 @@ const AddEmployees = () => {
       setFirstName("");
       setLastName("");
       setEmployeeRole("Please Select...");
+      setRefresh()
       e.target.reset();
     } catch (error: any) {
       setSubmitting(false);

@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import api from "../../../API/axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
+import DatePicker from "react-datepicker";
 import { useAuth } from "../../../hooks/useAuth";
 import { Employee } from "../../utils/types/Employee";
 import { useEmployerInfo } from "../../../hooks/useEmployerInfo";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const EvenTippool = () => {
   const { user } = useAuth();
@@ -16,7 +19,8 @@ const EvenTippool = () => {
     calculateTips,
     setCalculateTips
   } = useEmployerInfo();
-  const [tipsCollected, setTipsCollected] = useState<Employee[]>([]);
+  const [startDate, setStartDate] = useState(new Date())
+  const [shiftDescription, setShiftDescription] = useState("");
   const navigate = useNavigate();
 
   const handleMoneyHandlersChange = (event, index) => {
@@ -33,12 +37,13 @@ const EvenTippool = () => {
     setNonMoneyHandlers(data);
   };
 
-  useEffect(() => {
-    setTipsCollected({
-      moneyHandlers: moneyHandlers,
-      nonMoneyHandlers: nonMoneyHandlers,
-    });
-  }, [moneyHandlers, nonMoneyHandlers]);
+  const tipsCollected = {
+    dateTime: startDate,
+    shiftDescription: shiftDescription,
+    moneyHandlers: moneyHandlers,
+    nonMoneyHandlers: nonMoneyHandlers,
+  }
+
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -77,6 +82,16 @@ const EvenTippool = () => {
       <Form onSubmit={handleSubmit}>
         <div>
           <h3>Enter Tips</h3>
+          <br />
+          <DatePicker
+
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            timeInputLabel="Time:"
+            dateFormat="MM/dd/yyyy h:mm aa"
+            showTimeInput
+          />
+          <input placeholder="Shift Description" onChange={(e) => { setShiftDescription(e.target.value) }}></input>
           <div>
             {moneyHandlers.map(function (moneyHandler, index) {
               return (

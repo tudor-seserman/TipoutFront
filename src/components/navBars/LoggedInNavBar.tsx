@@ -18,6 +18,7 @@ const LoggedInNavBar = () => {
             <Nav.Link as={Link} to="/employees/add">Add Employee</Nav.Link>
             <Nav.Link as={Link} to="/employees/current">Employees</Nav.Link>
             <Nav.Link as={Link} to="/calculate">Calculate</Nav.Link>
+            <Nav.Link as={Link} to="/tipReports">Tip Reports</Nav.Link>
             <Nav.Link as={Link} to="/settings">Settings</Nav.Link>
             <Nav.Link onClick={() => logout()}>Logout</Nav.Link>
           </Nav>

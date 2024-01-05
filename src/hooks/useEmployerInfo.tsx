@@ -51,7 +51,7 @@ export const EmployerContextProvider = ({ children }: ContextProps) => {
           setNonMoneyHandlers(res.data.nonMoneyHandlers);
         });
     } catch (error) { }
-  }, [user, calculateTips]);
+  }, [user, calculateTips, refresh]);
 
   useEffect(() => {
     try {
