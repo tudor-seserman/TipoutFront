@@ -5,7 +5,7 @@ interface OpenRouteProps {
 }
 
 export const OpenRoute = ({ children }: OpenRouteProps) => {
-    const { user, setUser } = useAuth();
+    const { user, timedOutLogout } = useAuth();
 
     const parseJwt = (token: String) => {
         try {
@@ -18,7 +18,7 @@ export const OpenRoute = ({ children }: OpenRouteProps) => {
     if (user != null) {
         const decodedJwt = parseJwt(user.accessToken);
         if (decodedJwt.exp * 1000 < Date.now()) {
-            setUser(null);
+            timedOutLogout();
             return children;
         }
     }

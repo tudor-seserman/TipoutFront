@@ -39,7 +39,7 @@ const EvenTippool = () => {
 
   const tipsCollected = {
     dateTime: startDate,
-    shiftDescription: shiftDescription,
+    shift: shiftDescription,
     moneyHandlers: moneyHandlers,
     nonMoneyHandlers: nonMoneyHandlers,
   }

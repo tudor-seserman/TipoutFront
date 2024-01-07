@@ -8,7 +8,7 @@ interface AuthProviderType {
   user: { keyName: "token"; accessToken: "" };
   login: (loginFormDTO: {}) => NavigateFunction;
   logout: () => null;
-  setUser: () => null;
+  timedOutLogout: () => null;
 }
 
 const AuthContext = createContext({});
@@ -71,7 +71,8 @@ export const AuthProvider = ({ children }: ContextProps) => {
       user,
       login,
       logout,
-      setUser
+      setUser,
+      timedOutLogout
     }),
     [user]
   );
