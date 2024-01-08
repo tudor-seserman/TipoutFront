@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from "react";
-import api from "../../../API/axiosConfig";
-import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
-import DatePicker from "react-datepicker";
 import { useAuth } from "../../../hooks/useAuth";
-import { Employee } from "../../utils/types/Employee";
 import { useEmployerInfo } from "../../../hooks/useEmployerInfo";
 
-import "react-datepicker/dist/react-datepicker.css";
 
-const EvenTippool = () => {
-  const { user } = useAuth();
-  const {
-    moneyHandlers,
-    setMoneyHandlers,
-    nonMoneyHandlers,
-    setNonMoneyHandlers,
-    calculateTips,
-    setCalculateTips
-  } = useEmployerInfo();
-  const [startDate, setStartDate] = useState(new Date())
-  const [shiftDescription, setShiftDescription] = useState("");
-  const navigate = useNavigate();
+
+const EvenTippool = ({ handleSubmit, moneyHandlers, setMoneyHandlers, nonMoneyHandlers, setNonMoneyHandlers }) => {
+  // const { user } = useAuth();
+  // const {
+  //   moneyHandlers,
+  //   setMoneyHandlers,
+  //   nonMoneyHandlers,
+  //   setNonMoneyHandlers,
+
+  // } = useEmployerInfo();
 
   const handleMoneyHandlersChange = (event, index) => {
     let data = [...moneyHandlers];
@@ -37,43 +29,6 @@ const EvenTippool = () => {
     setNonMoneyHandlers(data);
   };
 
-  const tipsCollected = {
-    dateTime: startDate,
-    shift: shiftDescription,
-    moneyHandlers: moneyHandlers,
-    nonMoneyHandlers: nonMoneyHandlers,
-  }
-
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    try {
-      const response = await api.post("/calculate/EvenTippool", tipsCollected, {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      });
-      setCalculateTips(!calculateTips)
-      navigate("/calculate/report", { state: response.data });
-    } catch (error: any) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        alert("No tips were declared.");
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser
-        // and an instance of http.ClientRequest in node.js
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log("Error", error.message);
-      }
-    }
-  };
 
   return (
     <>
@@ -82,16 +37,7 @@ const EvenTippool = () => {
       <Form onSubmit={handleSubmit}>
         <div>
           <h3>Enter Tips</h3>
-          <br />
-          <DatePicker
 
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            timeInputLabel="Time:"
-            dateFormat="MM/dd/yyyy h:mm aa"
-            showTimeInput
-          />
-          <input placeholder="Shift Description" onChange={(e) => { setShiftDescription(e.target.value) }}></input>
           <div>
             {moneyHandlers.map(function (moneyHandler, index) {
               return (
@@ -147,7 +93,7 @@ const EvenTippool = () => {
             className="btn btn-primary"
           />
         </div>
-      </Form>
+      </Form >
     </>
   );
 };

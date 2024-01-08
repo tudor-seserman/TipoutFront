@@ -6,7 +6,7 @@ import Register from "./components/login/Register";
 import Login from "./components/login/Login";
 import AddEmployees from "./components/employees/AddEmployees";
 import { ProtectedRoute } from "./components/routeAuthentication/ProtectedRoute";
-import TipoutReport from "./components/calculate/TipoutReport";
+import TipoutReport from "./components/reports/TipoutReport";
 import CurrentEmployees from "./components/employees/CurrentEmployees";
 import Settings from "./components/settings/Settings";
 import InputCollectedTips from "./components/calculate/InputCollectedTips";
