@@ -12,10 +12,6 @@ import { Employee } from "../components/utils/types/Employee";
 import { TipRate } from "../components/utils/types/TipRate";
 
 interface EmployerContextProviderType {
-  // moneyHandlers: Employee[];
-  // setMoneyHandlers: React.Dispatch<React.SetStateAction<Employee[]>>;
-  // nonMoneyHandlers: Employee[];
-  // setNonMoneyHandlers: React.Dispatch<React.SetStateAction<Employee[]>>;
   tipRates: TipRate[];
   setTipRates: React.Dispatch<React.SetStateAction<TipRate[]>>;
   employees: Employee[];
@@ -30,28 +26,11 @@ const EmployerContext = createContext({});
 
 export const EmployerContextProvider = ({ children }: ContextProps) => {
   const { user } = useAuth();
-  // const [moneyHandlers, setMoneyHandlers] = useState<Employee[]>([]);
-  // const [nonMoneyHandlers, setNonMoneyHandlers] = useState<Employee[]>([]);
   const [tipRates, setTipRates] = useState<TipRate[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [calculateTips, setCalculateTips] = useState(false);
 
-
-  // useEffect(() => {
-  //   try {
-  //     api
-  //       .get("/calculate/EmployeeTipMap", {
-  //         headers: {
-  //           Authorization: "Bearer " + user.accessToken,
-  //         },
-  //       })
-  //       .then((res) => {
-  //         setMoneyHandlers(res.data.moneyHandlers);
-  //         setNonMoneyHandlers(res.data.nonMoneyHandlers);
-  //       });
-  //   } catch (error) { }
-  // }, [user, calculateTips, refresh]);
 
   useEffect(() => {
     try {
@@ -83,10 +62,6 @@ export const EmployerContextProvider = ({ children }: ContextProps) => {
 
   const value = useMemo(
     () => ({
-      // moneyHandlers,
-      // setMoneyHandlers,
-      // nonMoneyHandlers,
-      // setNonMoneyHandlers,
       tipRates,
       setTipRates,
       employees,

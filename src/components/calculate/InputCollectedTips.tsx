@@ -25,6 +25,7 @@ const InputCollectedTips = () => {
   const {
     refresh
   } = useEmployerInfo();
+  const noEmployeesCreated = moneyHandlers.length === 0
 
   function handleSchemaSelection(value) {
     setSubmitting(true);
@@ -98,7 +99,7 @@ const InputCollectedTips = () => {
   return (
     <>
       <SchemaSelector
-        isDisabled={submitting}
+        disabled={noEmployeesCreated}
         handleChange={(value) => handleSchemaSelection(value.value)}
         options={Object.keys(Schemas).map((t: string) => ({
           value: t,
@@ -106,7 +107,10 @@ const InputCollectedTips = () => {
         }))}
       />
 
-      {schema === "" && <SchemaLanding />}
+      {noEmployeesCreated && <h1>Please add employees that can collect tips in order to get started.</h1>}
+
+
+      {!noEmployeesCreated && schema === "" && <SchemaLanding />}
       {schema != "" && <TipoutMetadata handleTipoutMetadata={setMetadata} />}
       {schema === "Weighted Tippool By Role" && <WeightedTippoolByRole handleSubmit={calculateAPICall} moneyHandlers={moneyHandlers} setMoneyHandlers={setMoneyHandlers} nonMoneyHandlers={nonMoneyHandlers} setNonMoneyHandlers={setNonMoneyHandlers} />}
       {schema === "Even Tippool" && <EvenTippool handleSubmit={calculateAPICall} moneyHandlers={moneyHandlers} setMoneyHandlers={setMoneyHandlers} nonMoneyHandlers={nonMoneyHandlers} setNonMoneyHandlers={setNonMoneyHandlers} />}

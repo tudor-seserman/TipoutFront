@@ -3,34 +3,22 @@ import api from "../../API/axiosConfig";
 import { TipRate } from "../utils/types/TipRate";
 import { useAuth } from "../../hooks/useAuth";
 import { Form } from "react-bootstrap";
+import { useEmployerInfo } from "../../hooks/useEmployerInfo";
 
 const Settings = () => {
   const { user } = useAuth();
-  const [tipRates, setTipRates] = useState<TipRate[]>([]);
-  const [tipRatesToEdit, setTipRatesToEdit] = useState<TipRate[]>([]);
+  const { tipRates } = useEmployerInfo();
+  const [tipRatesToEdit, setTipRatesToEdit] = useState<TipRate[]>(tipRates);
+
 
   const handleTipRatesToEditChange = (event: any, index: number) => {
-    // tipRatesToEdit.push({ roleName: role, tipRate: event.target.value });
-    let data = [...tipRates];
+    let data = [...tipRatesToEdit];
     data[index]["tipRate"] = Number(event.target.value);
     setTipRatesToEdit(data);
   };
 
-  useEffect(() => {
-    api
-      .get("/employer/rates", {
-        headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
-      })
-      .then((res) => {
-        setTipRates(res.data);
-        setTipRatesToEdit(res.data);
-      });
-  }, []);
 
   const handleSubmit = async (e: any) => {
-    // if tipRates == tipRates ... no edits have been made
     e.preventDefault();
     try {
       const response = await api.post("/employer/editRates", tipRatesToEdit, {
@@ -43,7 +31,7 @@ const Settings = () => {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        alert("Does not match user information on record.");
+        alert("Woops there was an issue, please try again or alert us if the problem persists.");
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
@@ -61,6 +49,7 @@ const Settings = () => {
 
   return (
     <>
+      <h3>Current Role Weights</h3>
       <Form onSubmit={handleSubmit}>
         {tipRates.map(function (employeeTypeTipRate, index) {
           return (
@@ -72,7 +61,7 @@ const Settings = () => {
                     type="number"
                     step="any"
                     min="0"
-                    placeholder={String(employeeTypeTipRate.tipRate) + "%"}
+                    placeholder={String(employeeTypeTipRate.tipRate)}
                     aria-label="Tip Rate"
                     onChange={(event) =>
                       handleTipRatesToEditChange(event, index)
@@ -84,7 +73,7 @@ const Settings = () => {
           );
         })}
         <Form.Group>
-          <Form.Control type="submit" value="Edit Rates" />
+          <Form.Control type="submit" value="Edit Weights" />
         </Form.Group>
       </Form>
     </>

@@ -89,7 +89,7 @@ const WeightedTippoolByRole = ({ handleSubmit, moneyHandlers, setMoneyHandlers, 
       </Form>
       <br />
       <br />
-      <h5>Employee Tipout = Total Tips <strong>multiped by</strong> Weighed Assigned to Each Role Included in the Tippool <strong>over</strong> Total Weight of Roles Included In the Tippool <strong>divided by</strong> Number of Employees of that Role in the Tippool</h5>
+      <h4>Employee Tipout = Total Tips <strong>multiped by</strong> Weighed Assigned to Each Role Included in the Tippool <strong>over</strong> Total Weight of Roles Included In the Tippool <strong>divided by</strong> Number of Employees of that Role in the Tippool</h4>
 
       <p>Tips are collected and then divide by the weight given to the roles in the tippool.
         The tips from each role are than divided equally by employees in that role.
@@ -109,6 +109,7 @@ const WeightedTippoolByRole = ({ handleSubmit, moneyHandlers, setMoneyHandlers, 
       </p><p>
         <strong>Server Tipout = $20 = $100 * (40/100) ÷ 2</strong>
       </p>
+      <h4>Current Role Weights</h4>
       <div>
         {tipRates.map(function (tipRate, index) {
           return (

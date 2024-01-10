@@ -11,7 +11,7 @@ import CurrentEmployees from "./components/employees/CurrentEmployees";
 import Settings from "./components/settings/Settings";
 import InputCollectedTips from "./components/calculate/InputCollectedTips";
 import { OpenRoute } from "./components/routeAuthentication/OpenRoute";
-import TipReports from "./components/reports/TipReports";
+import AllTipoutReports from "./components/reports/AllTipoutReports";
 
 function App() {
   return (
@@ -47,7 +47,7 @@ function App() {
         element={
           <ProtectedRoute>
             <Routes>
-              <Route path="/" element={<TipReports />} />
+              <Route path="/" element={<AllTipoutReports />} />
             </Routes>
           </ProtectedRoute>
         }

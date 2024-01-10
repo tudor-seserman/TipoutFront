@@ -3,7 +3,7 @@ import Select from "react-select";
 import Form from "react-bootstrap/Form";
 import { SelectProps } from "../utils/types/SelectProps";
 
-const SchemaSelector = ({ submitting, options, handleChange }: SelectProps) => {
+const SchemaSelector = ({ disabled, options, handleChange }: SelectProps) => {
   return (
     <Form.Group>
       <Form.Label>
@@ -11,7 +11,7 @@ const SchemaSelector = ({ submitting, options, handleChange }: SelectProps) => {
         <Select
           onChange={handleChange}
           options={options}
-          isDisabled={submitting}
+          isDisabled={disabled}
         />
       </Form.Label>
     </Form.Group>
