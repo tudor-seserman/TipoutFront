@@ -13,11 +13,10 @@ const TipoutMetadata = ({ handleTipoutMetadata }) => {
         shift: shiftDescription,
     }
 
-    useEffect(() => { handleTipoutMetadata(tipoutMetadataObject) }, [startDate, shiftDescription])
+    useEffect(() => { handleTipoutMetadata(tipoutMetadataObject); console.log(startDate) }, [startDate, shiftDescription])
 
     return (
         <><DatePicker
-
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             timeInputLabel="Time:"

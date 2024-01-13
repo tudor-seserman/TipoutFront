@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import api from "../../API/axiosConfig";
 import { useAuth } from '../../hooks/useAuth';
 import { Table } from 'react-bootstrap';
+import { format } from 'fecha';
 
 type Report = {
     id: string;
     dateTime: string;
     shift: string;
 }
+
 
 const AllTipoutReports = () => {
     const { user } = useAuth()
@@ -41,7 +43,7 @@ const AllTipoutReports = () => {
                     try {
                         return (
                             <tr key={report.id}>
-                                <td>{report.dateTime}</td>
+                                <td>{format((new Date(report.dateTime + 'Z')), 'dddd MMMM Do, YYYY hh:mm A')}</td>
                                 <td>{report.shift}</td>
                             </tr>);
                     } catch (e) { console.log(report) }
