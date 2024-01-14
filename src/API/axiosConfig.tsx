@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default axios.create({
   // DEVELOPMENT
-  baseURL: { REACT_APP_BASE_URL },
+  // baseURL: "http://localhost:8080/",
   // PRODUCTION
-  // baseURL: "https://tipoutback.onrender.com",
+  baseURL: "https://tipoutback.onrender.com",
 });
