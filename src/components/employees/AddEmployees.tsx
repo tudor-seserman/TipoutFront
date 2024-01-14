@@ -8,7 +8,7 @@ import { useEmployerInfo } from "../../hooks/useEmployerInfo";
 
 const AddEmployees = () => {
   const { user } = useAuth();
-  const { setRefresh } = useEmployerInfo();
+  const { refresh, setRefresh } = useEmployerInfo();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [employeeRole, setEmployeeRole] = useState("Please Select...");
@@ -48,7 +48,7 @@ const AddEmployees = () => {
       setFirstName("");
       setLastName("");
       setEmployeeRole("Please Select...");
-      setRefresh()
+      setRefresh(!refresh)
       e.target.reset();
     } catch (error: any) {
       setSubmitting(false);
@@ -82,6 +82,7 @@ const AddEmployees = () => {
             placeholder="First Name"
             aria-label="First Name"
             readOnly={submitting}
+            onPaste={(e) => setFirstName(e.clipboardData.getData("text"))}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </Form.Group>
@@ -90,6 +91,7 @@ const AddEmployees = () => {
             placeholder="Last Name"
             aria-label="Lat Name"
             readOnly={submitting}
+            onPaste={(e) => setLastName(e.clipboardData.getData("text"))}
             onChange={(e) => setLastName(e.target.value)}
           />
         </Form.Group>
