@@ -18,7 +18,6 @@ const CurrentEmployees = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [employeeRole, setEmployeeRole] = useState<EmployeeRoles[]>([]);
-  const [employeeToDelete, setEmployeeToDelete] = useState("");
   const [idEdit, setIdEdit] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [alertInfo, setAlertInfo] = useState("");
@@ -69,7 +68,7 @@ const CurrentEmployees = () => {
     }
   };
 
-  const handleSubmitDelete = async (e: any) => {
+  const handleSubmitDelete = async (e: any, employeeToDelete: string, name: string) => {
     e.preventDefault();
     try {
       const response = await api.post(
@@ -81,6 +80,9 @@ const CurrentEmployees = () => {
           },
         }
       );
+      setAlertInfo(
+        `${name} was deleted`
+      )
       setAlertColor("danger");
       setRefresh(!refresh);
     } catch (error: any) {
@@ -191,16 +193,12 @@ const CurrentEmployees = () => {
                     size="sm"
                     variant="outline-danger"
                     onClick={(e) => {
-                      setEmployeeToDelete(employeeObject.id);
                       if (
                         window.confirm(
                           `Are You Sure You Want To Delete ${employeeObject.firstName} ${employeeObject.lastName}`
                         )
                       ) {
-                        handleSubmitDelete(e);
-                        setAlertInfo(
-                          `${employeeObject.firstName} ${employeeObject.lastName} was deleted`
-                        );
+                        handleSubmitDelete(e, employeeObject.id, `${employeeObject.firstName} ${employeeObject.lastName}`);
                       } else {
                         e.preventDefault();
                       }
