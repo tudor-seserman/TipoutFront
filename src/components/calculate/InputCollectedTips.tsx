@@ -58,7 +58,6 @@ const InputCollectedTips = () => {
   const calculateAPICall = async (e: any) => {
     e.preventDefault();
     try {
-      console.log(metadata);
       const response = await api.post(
         `/calculate/${apiEndpoint}`,
         tipsCollected,
