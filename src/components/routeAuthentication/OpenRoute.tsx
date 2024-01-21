@@ -15,7 +15,7 @@ export const OpenRoute = ({ children }: OpenRouteProps) => {
         }
     };
 
-    if (user != null) {
+    if (user != null && user != undefined) {
         const decodedJwt = parseJwt(user.accessToken);
         if (decodedJwt.exp * 1000 < Date.now()) {
             timedOutLogout();
