@@ -14,14 +14,16 @@ export const OpenRoute = ({ children }: OpenRouteProps) => {
             ;
         }
     };
-
-    if (user != null && user != undefined) {
-        console.log("Should not be able to read this.")
-        const decodedJwt = parseJwt(user.accessToken);
-        if (decodedJwt.exp * 1000 < Date.now()) {
-            timedOutLogout();
-            return children;
-        }
+    console.log(user)
+    if (user != null) {
+        try {
+            console.log("Should not be able to read this.")
+            const decodedJwt = parseJwt(user.accessToken);
+            if (decodedJwt.exp * 1000 < Date.now()) {
+                timedOutLogout();
+                return children;
+            }
+        } catch (e) { console.log(e) }
     }
 
     return children;
