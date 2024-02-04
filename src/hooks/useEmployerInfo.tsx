@@ -5,11 +5,11 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { ContextProps } from "../components/utils/types/ContextProps";
 import api from "../API/axiosConfig";
 import { useAuth } from "./useAuth";
 import { Employee } from "../components/utils/types/Employee";
 import { TipRate } from "../components/utils/types/TipRate";
+import { ChildrenProps } from "../components/utils/types/ChildrenProps";
 
 interface EmployerContextProviderType {
   tipRates: TipRate[];
@@ -24,7 +24,7 @@ interface EmployerContextProviderType {
 
 const EmployerContext = createContext({});
 
-export const EmployerContextProvider = ({ children }: ContextProps) => {
+export const EmployerContextProvider = ({ children }: ChildrenProps) => {
   const { user } = useAuth();
   const [tipRates, setTipRates] = useState<TipRate[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);

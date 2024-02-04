@@ -1,11 +1,8 @@
-import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { ChildrenProps } from "../utils/types/ChildrenProps";
 
-interface StyleProp {
-  children: React.ReactNode;
-}
 
-const BaseStyle = ({ children }: StyleProp) => {
+const BaseStyle = ({ children }: ChildrenProps) => {
   return (
     <Container className="baseStyle">
       <Row>

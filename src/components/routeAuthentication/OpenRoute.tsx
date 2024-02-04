@@ -1,10 +1,8 @@
 import { useAuth } from "../../hooks/useAuth";
+import { ChildrenProps } from "../utils/types/ChildrenProps";
 
-interface OpenRouteProps {
-    children: JSX.Element;
-}
 
-export const OpenRoute = ({ children }: OpenRouteProps) => {
+export const OpenRoute = ({ children }: ChildrenProps) => {
     const { user, timedOutLogout } = useAuth();
 
     const parseJwt = (token: String) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../API/axiosConfig";
 import { useAuth } from "../../hooks/useAuth";
 import EmployeeRoleSelect from "./EmployeeRoleSelect";
@@ -96,9 +96,9 @@ const AddEmployees = () => {
           />
         </Form.Group>
         <EmployeeRoleSelect
-          isDisabled={submitting}
+          disabled={submitting}
           value={{ value: employeeRole, label: employeeRole }}
-          handleChange={(value) => setEmployeeRole(value.value)}
+          handleChange={(e) => setEmployeeRole(e.value)}
           options={employerRoles.map((t: string) => ({ value: t, label: t }))}
         />
         <Form.Group>
