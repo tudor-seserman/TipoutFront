@@ -27,7 +27,7 @@ const InputCollectedTips = () => {
   } = useEmployerInfo();
   const noEmployeesCreated = moneyHandlers.length === 0
 
-  function handleSchemaSelection(value) {
+  function handleSchemaSelection(value: string) {
     setSubmitting(true);
     setSchema(value);
     setApiEndpoint(Schemas[value])

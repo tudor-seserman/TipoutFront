@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
 import { useEmployerInfo } from "../../../hooks/useEmployerInfo";
+import { SchemaProps } from "../../utils/types/SchemaProps";
 
-const WeightedTippoolByRole = ({ handleSubmit, moneyHandlers, setMoneyHandlers, nonMoneyHandlers, setNonMoneyHandlers }) => {
+const WeightedTippoolByRole = ({ handleSubmit, moneyHandlers, setMoneyHandlers, nonMoneyHandlers, setNonMoneyHandlers }: SchemaProps) => {
   const {
     tipRates
   } = useEmployerInfo();
 
-  const handleMoneyHandlersChange = (event, index) => {
+  const handleMoneyHandlersChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     let data = [...moneyHandlers];
     data[index]["tips"] = Number(event.target.value);
     setMoneyHandlers(data);
   };
 
-  const handleNonMoneyHandlersChange = (event, index) => {
+  const handleNonMoneyHandlersChange = (index: number) => {
     let data = [...nonMoneyHandlers];
     data[index]["tips"] != 1
       ? (data[index]["tips"] = 1)
@@ -43,8 +43,7 @@ const WeightedTippoolByRole = ({ handleSubmit, moneyHandlers, setMoneyHandlers, 
                       step="any"
                       min="0"
                       placeholder={"Tips for " + moneyHandler.name}
-                      defaultValue={moneyHandler.tips}
-                      onChange={(event) =>
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                         handleMoneyHandlersChange(event, index)
                       }
                     />
@@ -68,8 +67,8 @@ const WeightedTippoolByRole = ({ handleSubmit, moneyHandlers, setMoneyHandlers, 
                     className="checkbox"
                     label={nonMoneyHandler.name}
                     type="switch"
-                    onChange={(event) =>
-                      handleNonMoneyHandlersChange(event, index)
+                    onChange={() =>
+                      handleNonMoneyHandlersChange(index)
                     }
                   ></Form.Check>
                 </div>
