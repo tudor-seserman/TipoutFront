@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../API/axiosConfig";
-import Banner from "../navBars/Banner";
 import Form from "react-bootstrap/Form";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-type Inputs = {
+type RegisterVals = {
   businessName: String;
   username: String;
   password: String;
@@ -13,33 +12,37 @@ type Inputs = {
 };
 
 const Register = () => {
-  const [businessNameI, setBusinessNameI] = useState("");
-  const [usernameI, setUsernameI] = useState("");
-  const [passwordI, setPasswordI] = useState("");
-  const [verifyPasswordI, setVerifyPasswordI] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [employerRegistrationFormDTO, setEmployerRegistrationFormDTO] = useState({
+    businessName: "",
+    username: "",
+    password: "",
+    verifyPassword: ""
+  });
   let navigate = useNavigate();
 
   const {
     register,
     watch,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<RegisterVals>();
 
-  const onSubmit: SubmitHandler<Inputs> = () => addEmployer();
+  const onSubmit: SubmitHandler<RegisterVals> = () => addEmployer();
 
-  const employerRegistrationFormDTO = {
-    businessName: businessNameI,
-    username: usernameI,
-    password: passwordI,
-    verifyPassword: verifyPasswordI,
-  };
+  useEffect(() => {
+    setValue("businessName", employerRegistrationFormDTO.businessName);
+    setValue("username", employerRegistrationFormDTO.username);
+    setValue("password", employerRegistrationFormDTO.password);
+    setValue("verifyPassword", employerRegistrationFormDTO.verifyPassword);
+  }, [setValue, employerRegistrationFormDTO]);
+
+
 
   const addEmployer = async () => {
     setSubmitting(true);
     try {
-      // console.log(employerRegistrationFormDTO);
       const response = await api.post(
         "auth/register",
         employerRegistrationFormDTO,
@@ -50,11 +53,12 @@ const Register = () => {
           },
         }
       );
-
-      setBusinessNameI("");
-      setPasswordI("");
-      setUsernameI("");
-      setVerifyPasswordI("");
+      setEmployerRegistrationFormDTO({
+        businessName: "",
+        username: "",
+        password: "",
+        verifyPassword: ""
+      })
 
       if (response.status === 200) {
         return navigate("/login");
@@ -89,7 +93,7 @@ const Register = () => {
             aria-label="Business Name"
             readOnly={submitting}
             {...register("businessName", { required: true, minLength: 3 })}
-            onChange={(e) => setBusinessNameI(e.target.value)}
+            onChange={(e) => setEmployerRegistrationFormDTO({ ...employerRegistrationFormDTO, "businessName": e.target.value })}
           />
           {errors.businessName && (
             <div>
@@ -106,8 +110,7 @@ const Register = () => {
               required: true,
               minLength: 3,
             })}
-            onChange={(e) => setUsernameI(e.target.value)}
-          />
+            onChange={(e) => setEmployerRegistrationFormDTO({ ...employerRegistrationFormDTO, "username": e.target.value })} />
           {errors.username && (
             <div>Username is required to be at least 3 characters long</div>
           )}
@@ -122,8 +125,7 @@ const Register = () => {
               minLength: 5,
               maxLength: 30,
             })}
-            value={passwordI}
-            onChange={(e) => setPasswordI(e.target.value)}
+            onChange={(e) => setEmployerRegistrationFormDTO({ ...employerRegistrationFormDTO, "password": e.target.value })}
             type="password"
           />
           {errors.password && (
@@ -144,8 +146,7 @@ const Register = () => {
                 }
               },
             })}
-            value={verifyPasswordI}
-            onChange={(e) => setVerifyPasswordI(e.target.value)}
+            onChange={(e) => setEmployerRegistrationFormDTO({ ...employerRegistrationFormDTO, "verifyPassword": e.target.value })}
             type="password"
           />
           {errors.verifyPassword && <div> Your passwords do not match</div>}

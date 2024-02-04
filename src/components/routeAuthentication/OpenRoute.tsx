@@ -14,10 +14,9 @@ export const OpenRoute = ({ children }: OpenRouteProps) => {
             ;
         }
     };
-    console.log(user)
+
     if (user != null) {
         try {
-            console.log("Should not be able to read this.")
             const decodedJwt = parseJwt(user.accessToken);
             if (decodedJwt.exp * 1000 < Date.now()) {
                 timedOutLogout();
