@@ -14,8 +14,8 @@ import { ChildrenProps } from "../components/utils/types/ChildrenProps";
 interface EmployerContextProviderType {
   tipRates: TipRate[];
   setTipRates: React.Dispatch<React.SetStateAction<TipRate[]>>;
-  employees: Employee[];
-  setEmployees: React.Dispatch<React.SetStateAction<Employee[]>>;
+  employees: string[];
+  setEmployees: React.Dispatch<React.SetStateAction<string[]>>;
   refresh: boolean;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
   calculateTips: boolean;
@@ -27,7 +27,7 @@ const EmployerContext = createContext({});
 export const EmployerContextProvider = ({ children }: ChildrenProps) => {
   const { user } = useAuth();
   const [tipRates, setTipRates] = useState<TipRate[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employees, setEmployees] = useState<string[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [calculateTips, setCalculateTips] = useState(false);
 

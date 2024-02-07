@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from "../../API/axiosConfig";
 import { useAuth } from '../../hooks/useAuth';
 import { Table } from 'react-bootstrap';

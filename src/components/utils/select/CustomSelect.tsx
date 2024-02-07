@@ -1,20 +1,27 @@
 import Select from "react-select";
 import Form from "react-bootstrap/Form";
-import { SelectProps } from "../utils/types/SelectProps";
+import { SelectProps } from "../types/SelectProps";
 
-const SchemaSelector = ({ disabled, options, handleChange }: SelectProps) => {
+const CustomSelect = ({
+  label,
+  submitting,
+  options,
+  handleChange,
+}: SelectProps) => {
+
+
   return (
     <Form.Group>
       <Form.Label>
-        <h1>Current Schema: </h1>
+        {label}
         <Select
           onChange={handleChange}
           options={options}
-          isDisabled={disabled}
+          isDisabled={submitting}
         />
       </Form.Label>
     </Form.Group>
   );
 };
 
-export default SchemaSelector;
+export default CustomSelect;

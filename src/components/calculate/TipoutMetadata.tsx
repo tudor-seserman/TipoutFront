@@ -21,7 +21,7 @@ const TipoutMetadata = ({ handleTipoutMetadata }: TipoutMetadataProps) => {
     return (
         <><DatePicker
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            onChange={(date) => { if (date != null) setStartDate(date) }}
             timeInputLabel="Time:"
             dateFormat="MM/dd/yyyy h:mm aa"
             showTimeInput

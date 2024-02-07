@@ -5,5 +5,5 @@ export type SchemaProps = {
     moneyHandlers: Employee[];
     setMoneyHandlers: React.Dispatch<React.SetStateAction<Employee[]>>;
     nonMoneyHandlers: Employee[];
-    setNonMoneyHandlers: React.Dispatch<React.SetStateAction<Employee[]>>;
+    setNonMoneyHandlers: React.Dispatch<React.SetStateAction<Employee[]>>
 }

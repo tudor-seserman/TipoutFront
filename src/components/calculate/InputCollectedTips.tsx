@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import api from "../../API/axiosConfig";
-import SchemaSelector from "./SchemaSelector";
 import { Schemas } from "../utils/Schemas";
 import SchemaLanding from "./SchemaLanding";
 import EvenTippool from "./schemas/EvenTippool";
@@ -10,6 +9,13 @@ import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useEmployerInfo } from "../../hooks/useEmployerInfo";
 import { Employee } from "../utils/types/Employee";
+import type { } from 'react-select/base';
+import { Option } from "../utils/types/Option";
+import { TipoutReportType } from "../utils/types/TipoutReportType";
+import { ActionMeta } from "react-select";
+import CustomSelect from "../utils/select/CustomSelect";
+
+
 
 
 const InputCollectedTips = () => {
@@ -67,8 +73,9 @@ const InputCollectedTips = () => {
           },
         }
       );
+      const stateData: TipoutReportType = response.data;
       setCalculateTips(!calculateTips)
-      navigate("/calculate/report", { state: response.data });
+      navigate("/calculate/report", { state: stateData });
     } catch (error: any) {
       console.log(error.response.request.status)
       if (error.response.request.status == 401) {
@@ -98,9 +105,12 @@ const InputCollectedTips = () => {
 
   return (
     <>
-      <SchemaSelector
+      <CustomSelect
+        label={<h2>Select a scheme:</h2>}
+        value={schema}
         disabled={noEmployeesCreated}
-        handleChange={(value) => handleSchemaSelection(value.value)}
+        submitting={submitting}
+        handleChange={(newValue: Option | null, _actionMeta: ActionMeta<Option>) => { if (newValue != null) handleSchemaSelection(newValue.value) }}
         options={Object.keys(Schemas).map((t: string) => ({
           value: t,
           label: t,

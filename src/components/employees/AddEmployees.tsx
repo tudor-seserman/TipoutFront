@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import api from "../../API/axiosConfig";
 import { useAuth } from "../../hooks/useAuth";
-import EmployeeRoleSelect from "./EmployeeRoleSelect";
 import Form from "react-bootstrap/Form";
 import AlertDismissible from "../utils/alerts/AlertDismissible";
 import { useEmployerInfo } from "../../hooks/useEmployerInfo";
+import CustomSelect from "../utils/select/CustomSelect";
+import { Option } from "../utils/types/Option";
+import { ActionMeta } from "react-select";
+
 
 const AddEmployees = () => {
   const { user } = useAuth();
   const { refresh, setRefresh } = useEmployerInfo();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [employeeRole, setEmployeeRole] = useState("Please Select...");
+  const [employeeRole, setEmployeeRole] = useState<null | string>(null);
   const [employerRoles, setEmployerRoles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [newEmployee, setNewEmployee] = useState("");
@@ -43,12 +46,12 @@ const AddEmployees = () => {
           Authorization: "Bearer " + user.accessToken,
         },
       });
-      setSubmitting(false);
       setNewEmployee(firstName + " " + lastName);
       setFirstName("");
       setLastName("");
-      setEmployeeRole("Please Select...");
+      setEmployeeRole(null);
       setRefresh(!refresh)
+      setSubmitting(false);
       e.target.reset();
     } catch (error: any) {
       setSubmitting(false);
@@ -95,10 +98,12 @@ const AddEmployees = () => {
             onChange={(e) => setLastName(e.target.value)}
           />
         </Form.Group>
-        <EmployeeRoleSelect
+        <CustomSelect
+          label={<h5>What is their role?</h5>}
+          submitting={submitting}
           disabled={submitting}
-          value={{ value: employeeRole, label: employeeRole }}
-          handleChange={(e) => setEmployeeRole(e.value)}
+          value={employeeRole}
+          handleChange={(newValue: Option | null, _actionMeta: ActionMeta<Option>) => { if (newValue != null) setEmployeeRole(newValue.value) }}
           options={employerRoles.map((t: string) => ({ value: t, label: t }))}
         />
         <Form.Group>

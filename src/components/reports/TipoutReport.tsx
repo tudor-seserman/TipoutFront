@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Table from "react-bootstrap/Table";
+import { TipoutReportType } from "../utils/types/TipoutReportType";
 
 const TipoutReport = () => {
   const { state } = useLocation();
-  const [reportEntry, setReportEntry] = useState({});
+  const [reportEntry, setReportEntry] = useState<TipoutReportType>({
+    totalTips: 0,
+    employeesAndTipsOwed: { key: ["", ""] }
+  });
 
   useEffect(() => {
-    setReportEntry(state.employeesAndTipsOwed);
+    setReportEntry(state);
   }, [state]);
 
   return (
@@ -21,7 +25,7 @@ const TipoutReport = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.entries(reportEntry).map(function ([key, val]) {
+          {Object.entries(reportEntry.employeesAndTipsOwed).map(function ([key, val]: [string, [string, string]]) {
             return (
               <tr key={key}>
                 <td>{val[0]}</td>
