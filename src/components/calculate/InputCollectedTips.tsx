@@ -107,7 +107,10 @@ const InputCollectedTips = () => {
     <>
       <CustomSelect
         label={<h2>Select a scheme:</h2>}
-        value={schema}
+        value={schema == "" ? undefined : {
+          label: schema,
+          value: schema,
+        }}
         disabled={noEmployeesCreated}
         submitting={submitting}
         handleChange={(newValue: Option | null, _actionMeta: ActionMeta<Option>) => { if (newValue != null) handleSchemaSelection(newValue.value) }}

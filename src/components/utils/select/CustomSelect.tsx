@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import { SelectProps } from "../types/SelectProps";
 
 const CustomSelect = ({
+  value,
   label,
   submitting,
   options,
@@ -15,6 +16,8 @@ const CustomSelect = ({
       <Form.Label>
         {label}
         <Select
+          placeholder="Select..."
+          value={value}
           onChange={handleChange}
           options={options}
           isDisabled={submitting}

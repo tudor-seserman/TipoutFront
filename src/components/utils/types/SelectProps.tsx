@@ -3,7 +3,7 @@ import { Option } from "./Option";
 
 export type SelectProps = {
   label: JSX.Element;
-  value: string;
+  value: Option | undefined;
   disabled: boolean;
   submitting: boolean;
   options: readonly (Option | GroupBase<Option>)[];

@@ -14,7 +14,7 @@ const AddEmployees = () => {
   const { refresh, setRefresh } = useEmployerInfo();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [employeeRole, setEmployeeRole] = useState<null | string>(null);
+  const [employeeRole, setEmployeeRole] = useState("");
   const [employerRoles, setEmployerRoles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [newEmployee, setNewEmployee] = useState("");
@@ -46,10 +46,10 @@ const AddEmployees = () => {
           Authorization: "Bearer " + user.accessToken,
         },
       });
+      setEmployeeRole("");
       setNewEmployee(firstName + " " + lastName);
       setFirstName("");
       setLastName("");
-      setEmployeeRole(null);
       setRefresh(!refresh)
       setSubmitting(false);
       e.target.reset();
@@ -58,7 +58,7 @@ const AddEmployees = () => {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        alert("Does not match user information on record.");
+        alert("There was issue please try again.");
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
@@ -92,20 +92,25 @@ const AddEmployees = () => {
         <Form.Group>
           <Form.Control
             placeholder="Last Name"
-            aria-label="Lat Name"
+            aria-label="Last Name"
             readOnly={submitting}
             onPaste={(e) => setLastName(e.clipboardData.getData("text"))}
             onChange={(e) => setLastName(e.target.value)}
           />
         </Form.Group>
         <CustomSelect
-          label={<h5>What is their role?</h5>}
-          submitting={submitting}
+          label={<h5>What is their role:</h5>}
+          value={employeeRole == "" ? undefined :
+            {
+              label: employeeRole,
+              value: employeeRole,
+            }}
           disabled={submitting}
-          value={employeeRole}
+          submitting={submitting}
           handleChange={(newValue: Option | null, _actionMeta: ActionMeta<Option>) => { if (newValue != null) setEmployeeRole(newValue.value) }}
           options={employerRoles.map((t: string) => ({ value: t, label: t }))}
         />
+
         <Form.Group>
           <Form.Control
             disabled={submitting}
@@ -113,9 +118,33 @@ const AddEmployees = () => {
             value="Add Employee"
           />
         </Form.Group>
-      </Form>
+      </Form >
     </>
   );
 };
 
 export default AddEmployees;
+
+{/* <Form.Group>
+          <Form.Label>
+            <h5>What is their role?</h5>
+            <Select
+              className="basic-single"
+              classNamePrefix="select"
+              defaultValue="Please"
+              value={selectValue}
+              onChange={(newValue: SingleValue<{ value: string; label: string; }>, _actionMeta: ActionMeta<Option>) => { if (newValue != null) { setEmployeeRole(newValue.value); setSelectValue(newValue); } }}
+              options={employerRoles.map((t: string) => ({ value: t, label: t }))}
+              isDisabled={submitting} inputValue={""}
+              onInputChange={function (_newValue: string, _actionMeta: InputActionMeta): void {
+                null
+              }}
+              onMenuOpen={function (): void {
+                null
+              }}
+              onMenuClose={function (): void {
+                null
+              }}
+            />
+          </Form.Label>
+        </Form.Group> */}
