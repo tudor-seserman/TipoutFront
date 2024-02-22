@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 import api from "../API/axiosConfig";
-import { ContextProps } from "../components/utils/types/ContextProps";
+import { ChildrenProps } from "../components/utils/types/ChildrenProps";
 
 interface AuthProviderType {
   user: { keyName: "token"; accessToken: "" };
@@ -13,7 +13,7 @@ interface AuthProviderType {
 
 const AuthContext = createContext({});
 
-export const AuthProvider = ({ children }: ContextProps) => {
+export const AuthProvider = ({ children }: ChildrenProps) => {
   const [user, setUser] = useLocalStorage({
     keyName: "token",
     accessToken: "",

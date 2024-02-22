@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 
+interface TipoutMetadataProps {
+    handleTipoutMetadata: React.Dispatch<React.SetStateAction<{}>>
+}
 
 
-const TipoutMetadata = ({ handleTipoutMetadata }) => {
+const TipoutMetadata = ({ handleTipoutMetadata }: TipoutMetadataProps) => {
     const [startDate, setStartDate] = useState(new Date())
     const [shiftDescription, setShiftDescription] = useState("");
 
@@ -18,7 +21,7 @@ const TipoutMetadata = ({ handleTipoutMetadata }) => {
     return (
         <><DatePicker
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            onChange={(date) => { if (date != null) setStartDate(date) }}
             timeInputLabel="Time:"
             dateFormat="MM/dd/yyyy h:mm aa"
             showTimeInput

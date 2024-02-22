@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import api from "../../API/axiosConfig";
 import { TipRate } from "../utils/types/TipRate";
 import { useAuth } from "../../hooks/useAuth";

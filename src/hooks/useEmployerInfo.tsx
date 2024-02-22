@@ -5,17 +5,17 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { ContextProps } from "../components/utils/types/ContextProps";
 import api from "../API/axiosConfig";
 import { useAuth } from "./useAuth";
 import { Employee } from "../components/utils/types/Employee";
 import { TipRate } from "../components/utils/types/TipRate";
+import { ChildrenProps } from "../components/utils/types/ChildrenProps";
 
 interface EmployerContextProviderType {
   tipRates: TipRate[];
   setTipRates: React.Dispatch<React.SetStateAction<TipRate[]>>;
-  employees: Employee[];
-  setEmployees: React.Dispatch<React.SetStateAction<Employee[]>>;
+  employees: string[];
+  setEmployees: React.Dispatch<React.SetStateAction<string[]>>;
   refresh: boolean;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
   calculateTips: boolean;
@@ -24,10 +24,10 @@ interface EmployerContextProviderType {
 
 const EmployerContext = createContext({});
 
-export const EmployerContextProvider = ({ children }: ContextProps) => {
+export const EmployerContextProvider = ({ children }: ChildrenProps) => {
   const { user } = useAuth();
   const [tipRates, setTipRates] = useState<TipRate[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employees, setEmployees] = useState<string[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [calculateTips, setCalculateTips] = useState(false);
 

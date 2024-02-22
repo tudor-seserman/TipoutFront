@@ -1,10 +1,8 @@
 import { useAuth } from "../../hooks/useAuth";
+import { ChildrenProps } from "../utils/types/ChildrenProps";
 
-interface OpenRouteProps {
-    children: JSX.Element;
-}
 
-export const OpenRoute = ({ children }: OpenRouteProps) => {
+export const OpenRoute = ({ children }: ChildrenProps) => {
     const { user, timedOutLogout } = useAuth();
 
     const parseJwt = (token: String) => {
@@ -14,10 +12,9 @@ export const OpenRoute = ({ children }: OpenRouteProps) => {
             ;
         }
     };
-    console.log(user)
+
     if (user != null) {
         try {
-            console.log("Should not be able to read this.")
             const decodedJwt = parseJwt(user.accessToken);
             if (decodedJwt.exp * 1000 < Date.now()) {
                 timedOutLogout();

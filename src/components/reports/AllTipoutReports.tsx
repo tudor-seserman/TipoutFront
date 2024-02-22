@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from "../../API/axiosConfig";
 import { useAuth } from '../../hooks/useAuth';
 import { Table } from 'react-bootstrap';
@@ -15,7 +15,10 @@ type Report = {
 const AllTipoutReports = () => {
     const { user, logout } = useAuth()
     const [reports, setReports] = useState<Report[]>([])
+    const [sort, setSort] = useState(true)
     const navigate = useNavigate();
+
+
 
     useEffect(() => {
         try {
@@ -69,24 +72,30 @@ const AllTipoutReports = () => {
     }
 
     return (<>
-        <div>All Tipout Reports</div>
+        <h2>All Tipout Reports</h2>
         <Table striped bordered hover>
-            <thead>
+            <thead onClick={() => { setSort(!sort) }}>
                 <tr>
                     <th>Report Date</th>
                     <th>Report Shift</th>
                 </tr>
             </thead>
             <tbody>
-                {reports.map((report: Report) => {
-                    try {
-                        return (
-                            <tr key={report.id} onClick={() => { showReport(report.id) }}>
-                                <td>{format((new Date(report.dateTime + 'Z')), 'dddd MMMM Do, YYYY hh:mm A')}</td>
-                                <td>{report.shift}</td>
-                            </tr>);
-                    } catch (e) { console.log(report) }
-                })}
+                {reports
+                    .sort((a: Report, b: Report) => {
+                        const da = new Date(b.dateTime).getTime();
+                        const db = new Date(a.dateTime).getTime();
+                        return sort ? da - db : db - da
+                    })
+                    .map((report: Report) => {
+                        try {
+                            return (
+                                <tr key={report.id} onClick={() => { showReport(report.id) }}>
+                                    <td>{format((new Date(report.dateTime + 'Z')), 'dddd MMMM Do, YYYY hh:mm A')}</td>
+                                    <td>{report.shift}</td>
+                                </tr>);
+                        } catch (e) { console.log(report) }
+                    })}
             </tbody>
         </Table>
     </>
